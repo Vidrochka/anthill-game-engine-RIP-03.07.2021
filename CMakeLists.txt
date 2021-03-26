@@ -2,10 +2,9 @@ cmake_minimum_required(VERSION 3.8)
 
 project(atge)
 
-set(EXE "./Core/main.cpp")
+set(EXE "./main.cpp")
 
 set(LOGGING "./Utils/Include/ATLogger.hpp" "./Utils/Source/ATLogger.cpp")
-set(MUTEX "./Utils/Include/ATMutex.hpp" "./Utils/Source/ATMutex.cpp")
 set(OTHER "./Utils/Include/ATDefineExtensions.hpp")
 
 set(UTILS ${LOGGING} ${MUTEX})
@@ -17,3 +16,6 @@ set_target_properties(main PROPERTIES
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
+
+# cmake ../
+# cmake --build .

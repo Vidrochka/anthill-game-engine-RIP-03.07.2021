@@ -14,8 +14,17 @@ namespace at::utils::logger
 
     void ATLogger::_log(inner::LoggerInfo *log_section, std::string msg)
     {
-        std::lock_guard<std::mutex> lg(log_section->write_mutex);
-        log_section->buffer << msg;
+        bool needFlush = false;
+        { //need to free mutex
+            std::lock_guard<std::mutex> lg(log_section->write_mutex);
+            log_section->actual_buffer_filling += msg.length();
+            log_section->buffer << msg;
+
+            if (log_section->actual_buffer_filling > log_section->max_buffer_size)
+                needFlush = true;
+        }
+
+        _flush(log_section);
     }
 
     void ATLogger::_log(std::string log_section, std::string msg)
@@ -62,6 +71,17 @@ namespace at::utils::logger
     void ATLogger::_set_new_log_path(std::string log_section, std::string fpath)
     {
         _set_new_log_path(_log_buffer_map[log_section], fpath);
+    }
+
+    void ATLogger::_add_callback(std::function<void(std::string)> callback, inner::LoggerInfo *log_section)
+    {
+        std::lock_guard<std::mutex> lg(log_section->write_mutex);
+        log_section->callback.push_back(callback);
+    }
+
+    void ATLogger::_add_callback(std::function<void(std::string)> callback, std::string log_section)
+    {
+        _add_callback(callback, _log_buffer_map[log_section]);
     }
 
     ATLogger::ATLogger(std::string log_section)
@@ -158,14 +178,29 @@ namespace at::utils::logger
         _flush(_logger_section);
     }
 
-    void ATLogger::init_base_logger(int buffer_size, std::string fpath, bool throw_if_exist)
+    void ATLogger::b_add_callback(std::function<void(std::string)> callback)
+    {
+        _add_callback(callback, "");
+    }
+
+    void ATLogger::add_callback(std::function<void(std::string)> callback, std::string log_section = "")
+    {
+        _add_callback(callback, log_section);
+    }
+
+    void ATLogger::add_callback(std::function<void(std::string)> callback)
+    {
+        _add_callback(callback, _logger_section);
+    }
+
+    void ATLogger::init_base_logger(size_t buffer_size, std::string fpath, bool throw_if_exist)
     {
         std::lock_guard<std::mutex> lg(*_add_new_section_mutex);
 
         _log_buffer_map[""] = new inner::LoggerInfo(fpath, buffer_size);
     }
 
-    bool ATLogger::is_section_exist(std::string log_section, bool need_create_if_not_exist, std::string fpath, int buffer_size)
+    bool ATLogger::is_section_exist(std::string log_section, bool need_create_if_not_exist, std::string fpath, size_t buffer_size)
     {
         if (_log_buffer_map.count(log_section) > 0)
             return true;
@@ -178,7 +213,7 @@ namespace at::utils::logger
         return false;
     }
 
-    void ATLogger::create_section(std::string log_section, std::string fpath, int buffer_size, bool throw_if_exist)
+    void ATLogger::create_section(std::string log_section, std::string fpath, size_t buffer_size, bool throw_if_exist)
     {
         if (_log_buffer_map.count(log_section) > 0 && throw_if_exist)
             throw std::string("Log section already exist");
