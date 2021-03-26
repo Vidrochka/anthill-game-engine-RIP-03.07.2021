@@ -4,12 +4,11 @@ project(atge)
 
 set(EXE "./main.cpp")
 
-set(LOGGING "./Utils/Include/ATLogger.hpp" "./Utils/Source/ATLogger.cpp")
-set(OTHER "./Utils/Include/ATDefineExtensions.hpp")
+set(LOGGING "./Utils/Logger/ATLogger.hpp" "./Utils/Logger/ATLogger.cpp" "./Utils/Logger/ATLoggerDefineExtensions.hpp")
 
-set(UTILS ${LOGGING} ${MUTEX})
+set(UTILS "./Utils/Utils.hpp" ${LOGGING})
 
-add_executable(main ${EXE} ${UTILS} ${OTHER})
+add_executable(main ${EXE} ${UTILS})
 
 set_target_properties(main PROPERTIES
     CXX_STANDARD 17

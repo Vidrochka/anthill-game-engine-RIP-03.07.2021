@@ -9,8 +9,8 @@ Now, its jast a some kind of trash with plan. Look at the future...
 * [x] Make scoped logger interface
 * [x] Implement interface logic
 * [x] Add max buffer limit before flush
-* [ ] Add observer like log
-* [ ] Think about async write to buffer
+* [x] Add observer like log
+* [ ] Think about async write to buffer [wip]
 
 ---
 

@@ -1,5 +1,5 @@
-#ifndef at_define_extensions
-#define at_define_extensions
+#ifndef at_logger_define_extensions
+#define at_logger_define_extensions
 #include <sstream>
 #include "ATLogger.hpp"
 

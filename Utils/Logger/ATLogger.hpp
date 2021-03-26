@@ -30,7 +30,7 @@ namespace at::utils::logger
             //flush corrent logger_section
             virtual void flush() = 0;
 
-            virtual void add_callback(std::function<void(std::string)> callback);
+            virtual void add_callback(std::function<void(std::string)> callback) = 0;
         };
     }
     namespace inner

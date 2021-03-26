@@ -1,7 +1,4 @@
-#include "../Include/ATLogger.hpp"
-#include <sstream>
-#include <string>
-#include <fstream>
+#include "ATLogger.hpp"
 #include <ctime>
 #include <stdexcept>
 
@@ -24,7 +21,11 @@ namespace at::utils::logger
                 needFlush = true;
         }
 
-        _flush(log_section);
+        if (needFlush)
+            _flush(log_section);
+
+        for (auto callback : log_section->callback)
+            callback(msg);
     }
 
     void ATLogger::_log(std::string log_section, std::string msg)
@@ -183,7 +184,7 @@ namespace at::utils::logger
         _add_callback(callback, "");
     }
 
-    void ATLogger::add_callback(std::function<void(std::string)> callback, std::string log_section = "")
+    void ATLogger::add_callback(std::function<void(std::string)> callback, std::string log_section)
     {
         _add_callback(callback, log_section);
     }
