@@ -5,11 +5,11 @@ Now, its jast a some kind of trash with plan. Look at the future...
 # Goals
 
 - #### Logging
-:white_check_mark: Make logger strategy interface
-:white_check_mark: Implement logger strategy interface logic
-:white_check_mark: Make scoped logger interface
-:white_check_mark: Implement scoped logger interface logic
-:black_square_button: Think about async write to buffer [wip]
+:white_check_mark: Make logger strategy interface    
+:white_check_mark: Implement logger strategy interface logic    
+:white_check_mark: Make scoped logger interface    
+:white_check_mark: Implement scoped logger interface logic    
+:black_square_button: Think about async write to buffer [wip]    
 
 ---
 
@@ -137,7 +137,7 @@ Contain:
 :black_square_button: Load object with resource manager and draw it
       | It will not so simple, I know that we need some game object abstruction, but... its for test and some expiriance, idk how it realize |
 
-:black_square_button:
+:black_square_button: Make here points goals
 
 ---
 
