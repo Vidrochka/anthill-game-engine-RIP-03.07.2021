@@ -1,7 +1,7 @@
 #ifndef at_logger
 #define at_logger
 
-//#include "ATMutex.hpp"
+#include "ATLoggerStrategy.hpp"
 
 #include <sstream>
 #include <string>
@@ -20,17 +20,17 @@ namespace at::utils::logger
         {
         public:
             //log info to corrent logger
-            virtual void log_info(std::string msg) = 0;
+            virtual void log_info(std::string msg, std::string log_poin = "") = 0;
             //log debug to corrent logger
-            virtual void log_debug(std::string msg) = 0;
+            virtual void log_debug(std::string msg, std::string log_poin = "") = 0;
             //log error to corrent logger
-            virtual void log_error(std::string msg) = 0;
+            virtual void log_error(std::string msg, std::string log_poin = "") = 0;
             //log fatal to corrent logger
-            virtual void log_fatal(std::string msg, int exit_code) = 0;
+            virtual void log_fatal(std::string msg, int exit_code, std::string log_poin = "") = 0;
             //flush corrent logger_section
             virtual void flush() = 0;
 
-            virtual void add_callback(std::function<void(std::string)> callback) = 0;
+            virtual void add_strategy(strategy::interface::ILogStrategy *strategy) = 0;
         };
     }
     namespace inner
@@ -39,12 +39,11 @@ namespace at::utils::logger
         {
         public:
             LoggerInfo() {}
-            LoggerInfo(std::string fpath, size_t max_buffer_size) : fpath(fpath), max_buffer_size(max_buffer_size) {}
-            std::string fpath{};
-            std::stringstream buffer{};
-            const size_t max_buffer_size = 0;
-            size_t actual_buffer_filling = 0;
-            std::vector<std::function<void(std::string)>> callback;
+            LoggerInfo(at::utils::logger::strategy::interface::ILogStrategy *strategy)
+                : strategy_list(std::vector{strategy})
+            {
+            }
+            std::vector<at::utils::logger::strategy::interface::ILogStrategy *> strategy_list;
             std::mutex write_mutex{};
         };
     }
@@ -55,15 +54,13 @@ namespace at::utils::logger
         // log_section : {file_path, log_buffer, mutex}
         static std::map<std::string, inner::LoggerInfo *> _log_buffer_map;
         static std::mutex *_add_new_section_mutex;
-        static void _log(inner::LoggerInfo *log_section, std::string msg);
-        static void _log(std::string log_section, std::string msg);
+        static void _log(inner::LoggerInfo *log_section, std::string msg, logger::event::EVENT_TYPE event_type, std::string log_poin = "");
+        static void _log(std::string log_section, std::string msg, logger::event::EVENT_TYPE event_type, std::string log_poin = "");
         static void _flush(inner::LoggerInfo *log_section);
         static void _flush_all();
         static void _flush(std::string log_section);
-        static void _set_new_log_path(inner::LoggerInfo *log_section, std::string fpath);
-        static void _set_new_log_path(std::string log_section, std::string fpath);
-        static void _add_callback(std::function<void(std::string)> callback, inner::LoggerInfo *log_section);
-        static void _add_callback(std::function<void(std::string)> callback, std::string log_section);
+        static void _add_strategy(strategy::interface::ILogStrategy *strategy, inner::LoggerInfo *log_section);
+        static void _add_strategy(strategy::interface::ILogStrategy *strategy, std::string log_section);
 
         inner::LoggerInfo *_logger_section = nullptr;
 
@@ -74,32 +71,25 @@ namespace at::utils::logger
         ATLogger();
         ~ATLogger();
 
-        //set to base section
-        static void b_set_new_log_path(std::string fpath);
-        //set to defined section
-        void set_new_log_path(std::string log_section, std::string fpath);
-        //set to current section
-        void set_new_log_path(std::string fpath);
-
         //log info to base logger
-        static void b_log_info(std::string msg);
+        static void b_log_info(std::string msg, std::string log_poin = "");
         //log debug to base logger
-        static void b_log_debug(std::string msg);
+        static void b_log_debug(std::string msg, std::string log_poin = "");
         //log error to base logger
-        static void b_log_error(std::string msg);
+        static void b_log_error(std::string msg, std::string log_poin = "");
         //log fatal to base logger and exit with exit_code
-        static void b_log_fatal(std::string msg, int exit_code);
+        static void b_log_fatal(std::string msg, int exit_code, std::string log_poin = "");
         //log args
-        static void b_log_args(std::string args, int count);
+        static void b_log_args(std::string args, int count, std::string log_poin = "");
 
         //log info to corrent logger
-        void log_info(std::string msg) override;
+        void log_info(std::string msg, std::string log_poin = "") override;
         //log debug to corrent logger
-        void log_debug(std::string msg) override;
+        void log_debug(std::string msg, std::string log_poin = "") override;
         //log error to corrent logger
-        void log_error(std::string msg) override;
+        void log_error(std::string msg, std::string log_poin = "") override;
         //log fatal to corrent logger
-        void log_fatal(std::string msg, int exit_code) override;
+        void log_fatal(std::string msg, int exit_code, std::string log_poin = "") override;
 
         //flush base logger
         static void b_flush();
@@ -108,17 +98,17 @@ namespace at::utils::logger
         //flush corrent logger_section
         void flush() override;
 
-        static void b_add_callback(std::function<void(std::string)> callback);
-        static void add_callback(std::function<void(std::string)> callback, std::string log_section = "");
-        void add_callback(std::function<void(std::string)> callback) override;
+        static void b_add_strategy(strategy::interface::ILogStrategy *strategy = new strategy::DefaultFileLogStrategy{});
+        static void add_strategy(strategy::interface::ILogStrategy *strategy = new strategy::DefaultFileLogStrategy{}, std::string log_section = "");
+        void add_strategy(strategy::interface::ILogStrategy *strategy = new strategy::DefaultFileLogStrategy{}) override;
         //create base logger section
-        static void init_base_logger(size_t buffer_size = 1024, std::string fpath = "./default.log", bool throw_if_exist = true);
+        static void init_base_logger(strategy::interface::ILogStrategy *strategy = new strategy::DefaultFileLogStrategy{}, bool throw_if_exist = true);
         //check existanse log section;
         //if need_create_if_not_exist == true create and return false;
         //if need_create_if_not_exist == false and not exist return false;
         //if need_create_if_not_exist == anything and exist return true
-        static bool is_section_exist(std::string log_section = "", bool need_create_if_not_exist = false, std::string fpath = "./default.log", size_t buffer_size = 1024);
-        static void create_section(std::string log_section, std::string fpath = "./default.log", size_t buffer_size = 1024, bool throw_if_exist = true);
+        static bool is_section_exist(std::string log_section = "", bool need_create_if_not_exist = false, strategy::interface::ILogStrategy *strategy = new strategy::DefaultFileLogStrategy{});
+        static void create_section(std::string log_section, strategy::interface::ILogStrategy *strategy = new strategy::DefaultFileLogStrategy{}, bool throw_if_exist = true);
     };
 }
 

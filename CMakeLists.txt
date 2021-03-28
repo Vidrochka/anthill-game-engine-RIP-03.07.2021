@@ -4,7 +4,15 @@ project(atge)
 
 set(EXE "./main.cpp")
 
-set(LOGGING "./Utils/Logger/ATLogger.hpp" "./Utils/Logger/ATLogger.cpp" "./Utils/Logger/ATLoggerDefineExtensions.hpp")
+set(LOGGING 
+"./Utils/Logger/ATLogger.hpp" 
+"./Utils/Logger/ATLogger.cpp" 
+"./Utils/Logger/ATLoggerDefineExtensions.hpp" 
+"./Utils/Logger/"
+"./Utils/Logger/ATLoggerEvent.hpp"
+"./Utils/Logger/ATLoggerStrategy.hpp"
+"./Utils/Logger/ATLoggerStrategy.cpp"
+)
 
 set(UTILS "./Utils/Utils.hpp" ${LOGGING})
 
