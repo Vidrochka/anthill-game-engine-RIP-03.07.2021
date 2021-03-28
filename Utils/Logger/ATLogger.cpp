@@ -66,14 +66,19 @@ namespace at::utils::logger
         flush();
     }
 
+    void ATLogger::b_log_debug(std::string msg, std::string log_poin)
+    {
+        _log("", msg, event::EVENT_TYPE::DEBUG, log_poin);
+    }
+
     void ATLogger::b_log_info(std::string msg, std::string log_poin)
     {
         _log("", msg, event::EVENT_TYPE::INFO, log_poin);
     }
 
-    void ATLogger::b_log_debug(std::string msg, std::string log_poin)
+    void ATLogger::b_log_warning(std::string msg, std::string log_poin)
     {
-        _log("", msg, event::EVENT_TYPE::DEBUG, log_poin);
+        _log("", msg, event::EVENT_TYPE::WARNING, log_poin);
     }
 
     void ATLogger::b_log_error(std::string msg, std::string log_poin)
@@ -93,14 +98,19 @@ namespace at::utils::logger
         _log("", args + " | count [" + std::to_string(count) + "]", event::EVENT_TYPE::DEBUG, log_poin);
     }
 
+    void ATLogger::log_debug(std::string msg, std::string log_poin)
+    {
+        _log(_logger_section, msg, event::EVENT_TYPE::DEBUG, log_poin);
+    }
+
     void ATLogger::log_info(std::string msg, std::string log_poin)
     {
         _log(_logger_section, msg, event::EVENT_TYPE::INFO, log_poin);
     }
 
-    void ATLogger::log_debug(std::string msg, std::string log_poin)
+    void ATLogger::log_warning(std::string msg, std::string log_poin)
     {
-        _log(_logger_section, msg, event::EVENT_TYPE::DEBUG, log_poin);
+        _log(_logger_section, msg, event::EVENT_TYPE::WARNING, log_poin);
     }
 
     void ATLogger::log_error(std::string msg, std::string log_poin)

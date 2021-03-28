@@ -19,10 +19,12 @@ namespace at::utils::logger
         class ILogger
         {
         public:
+            //log debug to corrent logger
+            virtual void log_debug(std::string msg, std::string log_poin = "") = 0;
             //log info to corrent logger
             virtual void log_info(std::string msg, std::string log_poin = "") = 0;
             //log debug to corrent logger
-            virtual void log_debug(std::string msg, std::string log_poin = "") = 0;
+            virtual void log_warning(std::string msg, std::string log_poin = "") = 0;
             //log error to corrent logger
             virtual void log_error(std::string msg, std::string log_poin = "") = 0;
             //log fatal to corrent logger
@@ -71,10 +73,12 @@ namespace at::utils::logger
         ATLogger();
         ~ATLogger();
 
+        //log debug to base logger
+        static void b_log_debug(std::string msg, std::string log_poin = "");
         //log info to base logger
         static void b_log_info(std::string msg, std::string log_poin = "");
         //log debug to base logger
-        static void b_log_debug(std::string msg, std::string log_poin = "");
+        static void b_log_warning(std::string msg, std::string log_poin = "");
         //log error to base logger
         static void b_log_error(std::string msg, std::string log_poin = "");
         //log fatal to base logger and exit with exit_code
@@ -82,10 +86,12 @@ namespace at::utils::logger
         //log args
         static void b_log_args(std::string args, int count, std::string log_poin = "");
 
+        //log debug to corrent logger
+        void log_debug(std::string msg, std::string log_poin = "") override;
         //log info to corrent logger
         void log_info(std::string msg, std::string log_poin = "") override;
         //log debug to corrent logger
-        void log_debug(std::string msg, std::string log_poin = "") override;
+        void log_warning(std::string msg, std::string log_poin = "") override;
         //log error to corrent logger
         void log_error(std::string msg, std::string log_poin = "") override;
         //log fatal to corrent logger
