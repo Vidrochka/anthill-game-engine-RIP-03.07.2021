@@ -8,23 +8,23 @@ namespace at::utils::logger::strategy
 {
     namespace log_utils
     {
-        std::string _get_datetime_prefix()
+        std::wstring _get_datetime_prefix()
         {
             time_t now = time(0);
-            char *dt = ctime(&now);
-            std::string s_dt = std::string(dt);
-            return "[" + s_dt.substr(0, s_dt.length() - 1) + "]";
+            std::string raw_dt{ctime(&now)};
+            std::wstring s_dt = std::wstring(raw_dt.begin(), raw_dt.end());
+            return L"[" + s_dt.substr(0, s_dt.length() - 1) + L"]";
         }
     }
 
-    DefaultFileLogStrategy::DefaultFileLogStrategy(std::string file_path, size_t buffer_size)
+    DefaultFileLogStrategy::DefaultFileLogStrategy(std::wstring file_path, size_t buffer_size)
         : _buffer_size(buffer_size)
     {
         _file_path = file_path;
-        _file_stream = std::ofstream{file_path, std::ios::app};
+        _file_stream = std::wofstream{file_path, std::ios::app};
 
         if (!_file_stream.is_open())
-            throw std::string("Log file not opened: ") + _file_path;
+            throw std::wstring(L"Log file not opened: ") + _file_path;
     }
 
     DefaultFileLogStrategy::~DefaultFileLogStrategy()
@@ -33,9 +33,9 @@ namespace at::utils::logger::strategy
         _file_stream.close();
     }
 
-    void DefaultFileLogStrategy::Log(EVENT_TYPE event_type, std::string msg, std::string log_poin)
+    void DefaultFileLogStrategy::Log(EVENT_TYPE event_type, std::wstring msg, std::wstring log_poin)
     {
-        std::string pre_log_buffer;
+        std::wstring pre_log_buffer;
         pre_log_buffer += log_utils::_get_datetime_prefix();
 
         switch (event_type)
@@ -57,12 +57,12 @@ namespace at::utils::logger::strategy
             break;
         }
 
-        pre_log_buffer += "{ \"message\": \"" + msg + "\"";
+        pre_log_buffer += L"{ \"message\": \"" + msg + L"\"";
 
-        if (log_poin != "")
-            pre_log_buffer += ", \"log point\": \"" + log_poin + "\" }\n";
+        if (log_poin != L"")
+            pre_log_buffer += L", \"log point\": \"" + log_poin + L"\" }\n";
         else
-            pre_log_buffer += "}\n";
+            pre_log_buffer += L"}\n";
 
         _log_buffer << pre_log_buffer;
 
@@ -79,6 +79,6 @@ namespace at::utils::logger::strategy
     {
         _file_stream << _log_buffer.str();
         _file_stream.flush();
-        _log_buffer.str(std::string());
+        _log_buffer.str(std::wstring());
     }
 }

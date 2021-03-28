@@ -12,7 +12,7 @@ namespace at::utils::logger::strategy
         class ILogStrategy
         {
         public:
-            virtual void Log(at::utils::logger::event::EVENT_TYPE event_type, std::string msg, std::string log_poin = "") = 0;
+            virtual void Log(at::utils::logger::event::EVENT_TYPE event_type, std::wstring msg, std::wstring log_poin = L"") = 0;
             virtual void Flush() = 0;
         };
     }
@@ -20,16 +20,16 @@ namespace at::utils::logger::strategy
     class DefaultFileLogStrategy : public interface::ILogStrategy
     {
     private:
-        std::stringstream _log_buffer;
-        std::string _file_path;
-        std::ofstream _file_stream;
+        std::wstringstream _log_buffer;
+        std::wstring _file_path;
+        std::wofstream _file_stream;
         const size_t _buffer_size;
         size_t _actual_buffer_filling = 0;
 
     public:
-        DefaultFileLogStrategy(std::string file_path = "./default.log", size_t buffer_size = 1024);
+        DefaultFileLogStrategy(std::wstring file_path = L"./default.log", size_t buffer_size = 1024);
         ~DefaultFileLogStrategy();
-        void Log(at::utils::logger::event::EVENT_TYPE event_type, std::string msg, std::string log_poin = "") override;
+        void Log(at::utils::logger::event::EVENT_TYPE event_type, std::wstring msg, std::wstring log_poin = L"") override;
         void Flush() override;
     };
 }

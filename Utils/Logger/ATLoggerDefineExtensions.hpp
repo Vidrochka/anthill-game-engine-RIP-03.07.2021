@@ -4,20 +4,25 @@
 #include <string>
 #include "ATLogger.hpp"
 
-#define TO_STRING(obj) std::string(#obj)
+#define TO_STRING(obj) std::wstring(L#obj)
 
-#define LINE_STAMP std::string("Line stamp: ") + "{ \"file\": \"" + __FILE__ + "\", \"function\": \"" + __FUNCTION__ + "\", \"line\": \"" + std::to_string(__LINE__) + "\" }"
+inline std::wstring cast_to_wsring(std::string str)
+{
+    return std::wstring(str.begin(), str.end());
+}
+
+#define LINE_STAMP std::wstring(L"Line stamp: ") + L"{ \"file\": \"" + cast_to_wsring(__FILE__) + L"\", \"function\": \"" + cast_to_wsring(__FUNCTION__) + L"\", \"line\": \"" + std::to_wstring(__LINE__) + L"\" }"
 
 #define LOG_ARGS1(arg1)                                                      \
     {                                                                        \
-        std::stringstream __tmp_args_stream{};                               \
+        std::wstringstream __tmp_args_stream{};                              \
         __tmp_args_stream << arg1;                                           \
         at::utils::logger::ATLogger::b_log_args(__tmp_args_stream.str(), 1); \
     }
 
 #define LOG_ARGS2(arg1, arg2)                                                \
     {                                                                        \
-        std::stringstream __tmp_args_stream{};                               \
+        std::wstringstream __tmp_args_stream{};                              \
         __tmp_args_stream << arg1 << ",";                                    \
         __tmp_args_stream << arg2;                                           \
         at::utils::logger::ATLogger::b_log_args(__tmp_args_stream.str(), 2); \
@@ -25,7 +30,7 @@
 
 #define LOG_ARGS3(arg1, arg2, arg3)                                          \
     {                                                                        \
-        std::stringstream __tmp_args_stream{};                               \
+        std::wstringstream __tmp_args_stream{};                              \
         __tmp_args_stream << arg1 << ", ";                                   \
         __tmp_args_stream << arg2 << ", ";                                   \
         __tmp_args_stream << arg3;                                           \
@@ -34,7 +39,7 @@
 
 #define LOG_ARGS4(arg1, arg2, arg3, arg4)                                    \
     {                                                                        \
-        std::stringstream __tmp_args_stream{};                               \
+        std::wstringstream __tmp_args_stream{};                              \
         __tmp_args_stream << arg1 << ", ";                                   \
         __tmp_args_stream << arg2 << ", ";                                   \
         __tmp_args_stream << arg3 << ", ";                                   \
@@ -44,7 +49,7 @@
 
 #define LOG_ARGS5(arg1, arg2, arg3, arg4, arg5)                              \
     {                                                                        \
-        std::stringstream __tmp_args_stream{};                               \
+        std::wstringstream __tmp_args_stream{};                              \
         __tmp_args_stream << arg1 << ", ";                                   \
         __tmp_args_stream << arg2 << ", ";                                   \
         __tmp_args_stream << arg3 << ", ";                                   \
@@ -55,7 +60,7 @@
 
 #define LOG_ARGS6(arg1, arg2, arg3, arg4, arg5, arg6)                        \
     {                                                                        \
-        std::stringstream __tmp_args_stream{};                               \
+        std::wstringstream __tmp_args_stream{};                              \
         __tmp_args_stream << arg1 << ", ";                                   \
         __tmp_args_stream << arg2 << ", ";                                   \
         __tmp_args_stream << arg3 << ", ";                                   \
@@ -67,7 +72,7 @@
 
 #define LOG_ARGS7(arg1, arg2, arg3, arg4, arg5, arg6, arg7)                  \
     {                                                                        \
-        std::stringstream __tmp_args_stream{};                               \
+        std::wstringstream __tmp_args_stream{};                              \
         __tmp_args_stream << arg2 << ", ";                                   \
         __tmp_args_stream << arg1 << ", ";                                   \
         __tmp_args_stream << arg3 << ", ";                                   \
@@ -80,7 +85,7 @@
 
 #define LOG_ARGS8(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)            \
     {                                                                        \
-        std::stringstream __tmp_args_stream{};                               \
+        std::wstringstream __tmp_args_stream{};                              \
         __tmp_args_stream << arg1 << ", ";                                   \
         __tmp_args_stream << arg2 << ", ";                                   \
         __tmp_args_stream << arg3 << ", ";                                   \
