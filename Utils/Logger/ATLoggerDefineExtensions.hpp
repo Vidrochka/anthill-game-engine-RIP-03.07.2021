@@ -1,7 +1,12 @@
 #ifndef at_logger_define_extensions
 #define at_logger_define_extensions
 #include <sstream>
+#include <string>
 #include "ATLogger.hpp"
+
+#define TO_STRING(obj) std::string(#obj)
+
+#define LINE_STAMP std::string("Line stamp: ") + "{ \"file\": \"" + __FILE__ + "\", \"function\": \"" + __FUNCTION__ + "\", \"line\": \"" + std::to_string(__LINE__) + "\" }"
 
 #define LOG_ARGS1(arg1)                                                      \
     {                                                                        \
