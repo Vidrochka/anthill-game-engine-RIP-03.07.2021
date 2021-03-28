@@ -8,19 +8,24 @@ Now, its jast a some kind of trash with plan. Look at the future...
 :white_check_mark: Make logger strategy interface    
 :white_check_mark: Implement logger strategy interface logic    
 :white_check_mark: Make scoped logger interface    
-:white_check_mark: Implement scoped logger interface logic    
+:white_check_mark: Implement scoped logger interface logic   
+:white_check_mark: Make normaly unicode [wip]    
 :black_square_button: Think about async write to buffer [wip]    
 
 ---
 
 - ### Config manager
 
-:black_square_button: Make Interface for configuration loading    
-
-- From file
-- From stream
-
-:black_square_button: Add interface implementation as json/xml/tson loader    
+:white_check_mark: Make Config and Section Interface    
+:white_check_mark: Make default realization config and section Interface    
+:white_check_mark: Make Config source Interface    
+:white_check_mark: Make file config source realization    
+:black_square_button: Make stream config source realization    
+:white_check_mark: Make parsing strategy Interface    
+:white_check_mark: Make toml parsing strategy realization    
+:black_square_button: Add interface implementation as json/xml loader    
+:white_check_mark: Make config namager processing static function    
+:white_check_mark: Make normaly unicode [wip]    
 
 ---
 
