@@ -5,14 +5,14 @@
 #include <sstream>
 #include <fstream>
 
-namespace at::utils::logger::strategy
+namespace at::utils::logger_manager::strategy
 {
     namespace interface
     {
         class ILogStrategy
         {
         public:
-            virtual void Log(at::utils::logger::event::EVENT_TYPE event_type, std::wstring msg, std::wstring log_poin = L"") = 0;
+            virtual void Log(at::utils::logger_manager::event::EVENT_TYPE event_type, std::wstring msg, std::wstring log_poin = L"") = 0;
             virtual void Flush() = 0;
         };
     }
@@ -29,7 +29,7 @@ namespace at::utils::logger::strategy
     public:
         DefaultFileLogStrategy(std::wstring file_path = L"./default.log", size_t buffer_size = 1024);
         ~DefaultFileLogStrategy();
-        void Log(at::utils::logger::event::EVENT_TYPE event_type, std::wstring msg, std::wstring log_poin = L"") override;
+        void Log(at::utils::logger_manager::event::EVENT_TYPE event_type, std::wstring msg, std::wstring log_poin = L"") override;
         void Flush() override;
     };
 }

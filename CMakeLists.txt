@@ -8,10 +8,11 @@ set(LOGGING
 "./Utils/Logger/ATLogger.hpp" 
 "./Utils/Logger/ATLogger.cpp" 
 "./Utils/Logger/ATLoggerDefineExtensions.hpp" 
-"./Utils/Logger/"
 "./Utils/Logger/ATLoggerEvent.hpp"
 "./Utils/Logger/ATLoggerStrategy.hpp"
 "./Utils/Logger/ATLoggerStrategy.cpp"
+"./Utils/Logger/ATLoggerManager.hpp"
+"./Utils/Logger/ATLoggerManager.cpp"
 )
 
 set(UTILS "./Utils/Utils.hpp" ${LOGGING})

@@ -2,9 +2,9 @@
 #include "ATLoggerDefineExtensions.hpp"
 #include <ctime>
 
-using namespace at::utils::logger::event;
+using namespace at::utils::logger_manager::event;
 
-namespace at::utils::logger::strategy
+namespace at::utils::logger_manager::strategy
 {
     namespace log_utils
     {
