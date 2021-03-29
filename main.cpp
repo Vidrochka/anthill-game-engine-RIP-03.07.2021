@@ -8,13 +8,12 @@ int main()
     try
     {
         setlocale(LC_ALL, "");
-        at::utils::logger::ATLogger::init_base_logger();
-        at::utils::logger::ATLogger::create_section(L"test", new at::utils::logger::strategy::DefaultFileLogStrategy{L"./text1.log", 6});
-        at::utils::logger::interface::ILogger *logger = new at::utils::logger::ATLogger(L"test");
-        LOG_ARGS4(L"1", L"2", L"3", L"4")
-        logger->add_strategy(new at::utils::logger::strategy::DefaultFileLogStrategy{L"./test2.log", 5});
+        at::utils::logger_manager::LoggerManager::create_logger(L"test", new at::utils::logger_manager::strategy::DefaultFileLogStrategy{L"./text1.log", 6});
+        auto logger = at::utils::logger_manager::LoggerManager::get_logger(L"test");
+        //LOG_ARGS4(L"1", L"2", L"3", L"4")
+        logger->add_strategy(new at::utils::logger_manager::strategy::DefaultFileLogStrategy{L"./test2.log", 5});
         logger->log_debug(L"test 1");
-        ((at::utils::logger::ATLogger *)logger)->b_log_debug(L"b test 1 дда 佐藤 幹夫 ");
+        //logger->log_debug(L"b test 1 дда 佐藤 幹夫 ");
         logger->log_error(L"test 2");
 
         at::utils::config_manager::source::interface::IConfigSourceInterface *source = new at::utils::config_manager::source::DefaultFileConfigSource(L"./test.toml");

@@ -2,6 +2,7 @@
 #include "Logger/ATLoggerDefineExtensions.hpp"
 #include "Logger/ATLogger.hpp"
 #include "Logger/ATLoggerStrategy.hpp"
+#include "Logger/ATLoggerManager.hpp"
 
 //--------------Config manager--------------//
 #include "ConfigManager/ATConfig.hpp"
