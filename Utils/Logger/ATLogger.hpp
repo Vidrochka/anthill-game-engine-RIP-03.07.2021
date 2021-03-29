@@ -3,6 +3,7 @@
 
 #include "ATLoggerStrategy.hpp"
 #include "ATLoggerContext.hpp"
+#include "../Types/ATString.hpp"
 
 #include <sstream>
 #include <string>
@@ -15,6 +16,7 @@
 
 using namespace at::utils::logger_manager::strategy;
 using namespace at::utils::logger_manager::strategy::interface;
+using namespace at::type::string;
 
 namespace at::utils::logger_manager::logger
 {
@@ -24,15 +26,15 @@ namespace at::utils::logger_manager::logger
         {
         public:
             //log debug to corrent logger
-            virtual void log_debug(std::wstring msg, std::wstring log_poin = L"") = 0;
+            virtual void log_debug(u8string_at msg, u8string_at log_poin = "") = 0;
             //log info to corrent logger
-            virtual void log_info(std::wstring msg, std::wstring log_poin = L"") = 0;
+            virtual void log_info(u8string_at msg, u8string_at log_poin = "") = 0;
             //log debug to corrent logger
-            virtual void log_warning(std::wstring msg, std::wstring log_poin = L"") = 0;
+            virtual void log_warning(u8string_at msg, u8string_at log_poin = "") = 0;
             //log error to corrent logger
-            virtual void log_error(std::wstring msg, std::wstring log_poin = L"") = 0;
+            virtual void log_error(u8string_at msg, u8string_at log_poin = "") = 0;
             //log fatal to corrent logger
-            virtual void log_fatal(std::wstring msg, int error_code, std::wstring log_poin = L"") = 0;
+            virtual void log_fatal(u8string_at msg, int error_code, u8string_at log_poin = "") = 0;
             //flush corrent logger_section
             virtual void flush() = 0;
 
@@ -43,7 +45,7 @@ namespace at::utils::logger_manager::logger
     class DefaultLogger : public interface::ILogger
     {
     private:
-        void _log(std::wstring msg, event::EVENT_TYPE event_type, std::wstring log_poin = L"");
+        void _log(u8string_at msg, event::EVENT_TYPE event_type, u8string_at log_poin = "");
         void _flush();
         void _add_strategy(ILogStrategy *strategy);
 
@@ -55,15 +57,15 @@ namespace at::utils::logger_manager::logger
         ~DefaultLogger();
 
         //log debug to corrent logger
-        void log_debug(std::wstring msg, std::wstring log_poin = L"") override;
+        void log_debug(u8string_at msg, u8string_at log_poin = "") override;
         //log info to corrent logger
-        void log_info(std::wstring msg, std::wstring log_poin = L"") override;
+        void log_info(u8string_at msg, u8string_at log_poin = "") override;
         //log debug to corrent logger
-        void log_warning(std::wstring msg, std::wstring log_poin = L"") override;
+        void log_warning(u8string_at msg, u8string_at log_poin = "") override;
         //log error to corrent logger
-        void log_error(std::wstring msg, std::wstring log_poin = L"") override;
+        void log_error(u8string_at msg, u8string_at log_poin = "") override;
         //log fatal to corrent logger
-        void log_fatal(std::wstring msg, int error_code, std::wstring log_poin = L"") override;
+        void log_fatal(u8string_at msg, int error_code, u8string_at log_poin = "") override;
 
         void flush() override;
 
