@@ -23,9 +23,9 @@ Now, its jast a some kind of trash with plan. Look at the future...
 :black_square_button: Make stream config source realization    
 :white_check_mark: Make parsing strategy Interface    
 :white_check_mark: Make toml parsing strategy realization    
-:black_square_button: Add interface implementation as json/xml loader    
+:black_square_button: Make json/xml parsing strategy realization   
 :white_check_mark: Make config namager processing static function    
-:white_check_mark: Make normaly unicode [wip]    
+:black_square_button: Make normaly unicode [wip]    
 
 ---
 

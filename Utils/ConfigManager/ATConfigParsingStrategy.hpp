@@ -3,9 +3,11 @@
 
 #include "ATConfig.hpp"
 #include "ATConfigSource.hpp"
+#include "../Types/ATString.hpp"
 
 using namespace at::utils::config_manager::config::interface;
 using namespace at::utils::config_manager::source::interface;
+using namespace at::type::string;
 
 namespace at::utils::config_manager::parsing_strategy
 {

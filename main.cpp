@@ -16,13 +16,13 @@ int main()
         logger->log_debug("b test 1 дда 佐藤 幹夫 ");
         logger->log_error("test 2");
         std::cout << "1" << std::endl;
-        at::utils::config_manager::source::interface::IConfigSourceInterface *source = new at::utils::config_manager::source::DefaultFileConfigSource(L"./test.toml");
+        at::utils::config_manager::source::interface::IConfigSourceInterface *source = new at::utils::config_manager::source::DefaultFileConfigSource(U"./test.toml");
         std::cout << "2" << std::endl;
         at::utils::config_manager::parsing_strategy::interface::IParsingStrategy *strategy = new at::utils::config_manager::parsing_strategy::TomlParsingStrategy();
         std::cout << "3" << std::endl;
         auto config = at::utils::config_manager::ConfigManager::get_config(source, strategy);
         std::cout << "4" << std::endl;
-        //logger->log_info(config->get_section(L"default")->get_value(L"test"));
+        logger->log_info(config->get_section("default")->get_value("test"));
 
         delete source;
         delete strategy;
