@@ -9,3 +9,6 @@
 #include "ConfigManager/ATConfigManager.hpp"
 #include "ConfigManager/ATConfigParsingStrategy.hpp"
 #include "ConfigManager/ATConfigSource.hpp"
+
+//--------------Castom types--------------//
+//#include "Types/ATString.hpp"

@@ -26,7 +26,11 @@ set(ConfigManager
 "./Utils/ConfigManager/ATConfigSource.cpp"
 )
 
-set(UTILS "./Utils/Utils.hpp" ${LOGGING} ${ConfigManager})
+set(Types
+"./Utils/Types/ATString.hpp"
+)
+
+set(UTILS "./Utils/Utils.hpp" ${LOGGING} ${ConfigManager} ${Types})
 
 add_executable(main ${EXE} ${UTILS})
 
