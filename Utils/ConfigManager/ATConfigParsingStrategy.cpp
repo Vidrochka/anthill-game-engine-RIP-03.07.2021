@@ -8,31 +8,32 @@
 using namespace at::utils::config_manager::config::interface;
 using namespace at::utils::config_manager::config;
 using namespace at::utils::config_manager::source::interface;
+using namespace at::type::string;
 
 namespace at::utils::config_manager::parsing_strategy
 {
     ISection *fill_section(IConfigSourceInterface *config_source, size_t nesting);
 
-    bool is_section_start(std::wstring str);
-    std::wstring get_section_name(std::wstring str);
+    bool is_section_start(u32string_at str);
+    u32string_at get_section_name(u32string_at str);
 
-    size_t start_with_sym_count(std::wstring &str, const std::wstring &chars);
+    size_t start_with_sym_count(u32string_at &str, const u32string_at &chars);
 
-    std::wstring &comment_trim(std::wstring &str);
-    std::wstring &trim(std::wstring &str, const std::wstring &chars);
+    u32string_at &comment_trim(u32string_at &str);
+    u32string_at &trim(u32string_at &str, const u32string_at &chars);
 
     IConfig *TomlParsingStrategy::get_config(IConfigSourceInterface *config_source)
     {
-        std::map<std::wstring, ISection *> sections_map;
+        std::map<u8string_at, ISection *> sections_map;
 
         while (config_source->has_next_data())
         {
-            std::wstring line = config_source->get_next_line();
-            line = trim(comment_trim(line), L" ");
+            u32string_at line = config_source->get_next_line();
+            line = trim(comment_trim(line), U" ");
 
             if (is_section_start(line))
             {
-                sections_map[get_section_name(line)] = fill_section(config_source, 1);
+                sections_map[u32_to_u8_at(get_section_name(line))] = fill_section(config_source, 1);
             }
             else
             {
@@ -45,19 +46,19 @@ namespace at::utils::config_manager::parsing_strategy
 
     ISection *fill_section(IConfigSourceInterface *config_source, size_t nesting)
     {
-        std::map<std::wstring, std::wstring> filds_map{};
-        std::map<std::wstring, ISection *> sections_map{};
+        std::map<u8string_at, u8string_at> filds_map{};
+        std::map<u8string_at, ISection *> sections_map{};
 
         while (config_source->has_next_data())
         {
-            std::wstring line = config_source->get_next_line();
+            u32string_at line = config_source->get_next_line();
 
             if (line.empty())
                 continue;
 
             if (is_section_start(line))
             {
-                size_t tab_count = start_with_sym_count(line, L"\t");
+                size_t tab_count = start_with_sym_count(line, U"\t");
 
                 /* If section lable higer then current nested level, it is new section
                     [LAble1] <- nested level 1 (\t in line start)
@@ -71,7 +72,7 @@ namespace at::utils::config_manager::parsing_strategy
 
                 if (tab_count > nesting)
                 {
-                    sections_map[get_section_name(line)] = fill_section(config_source, nesting + 1);
+                    sections_map[u32_to_u8_at(get_section_name(line))] = fill_section(config_source, nesting + 1);
                     continue;
                 }
                 else
@@ -80,75 +81,75 @@ namespace at::utils::config_manager::parsing_strategy
                 }
             }
 
-            size_t splitter_pos = line.find_first_of(L"=");
+            size_t splitter_pos = line.find_first_of(U"=");
 
-            if (splitter_pos == std::wstring::npos)
+            if (splitter_pos == u32string_at::npos)
             {
-                filds_map[trim(line, L" ")] = L"";
+                filds_map[u32_to_u8_at(trim(line, U" "))] = u8string_at{""};
             }
             else
             {
-                std::wstring key = line.substr(0, splitter_pos);
-                std::wstring value = line.substr(splitter_pos + 1);
-                filds_map[trim(key, L" ")] = trim(value, L"\" ");
+                u32string_at key = line.substr(0, splitter_pos);
+                u32string_at value = line.substr(splitter_pos + 1);
+                filds_map[u32_to_u8_at(trim(key, U" "))] = u32_to_u8_at(trim(value, U"\" "));
             }
         }
 
         return new DefaultSection(filds_map, sections_map);
     }
 
-    bool is_section_start(std::wstring str)
+    bool is_section_start(u32string_at str)
     {
-        const std::wregex r(L"\\[[a-zA-Z]+\\]");
-        return std::regex_match(str, r);
+        const std::regex r("\\[[a-zA-Z]+\\]");
+        return std::regex_match(u32_to_u8_at(str), r);
     }
 
-    std::wstring get_section_name(std::wstring str)
+    u32string_at get_section_name(u32string_at str)
     {
-        return trim(str, L"[]");
+        return trim(str, U"[]");
     }
 
-    std::wstring &ltrim(std::wstring &str, const std::wstring &chars)
+    u32string_at &ltrim(u32string_at &str, const u32string_at &chars)
     {
         size_t pos = str.find_first_not_of(chars);
 
-        if (pos == std::wstring::npos)
+        if (pos == u32string_at::npos)
             return str;
 
         str.erase(0, pos);
         return str;
     }
 
-    std::wstring &rtrim(std::wstring &str, const std::wstring &chars)
+    u32string_at &rtrim(u32string_at &str, const u32string_at &chars)
     {
         size_t pos = str.find_last_not_of(chars);
 
-        if (pos == std::wstring::npos)
+        if (pos == u32string_at::npos)
             return str;
 
         str.erase(pos + 1);
         return str;
     }
 
-    size_t start_with_sym_count(std::wstring &str, const std::wstring &chars)
+    size_t start_with_sym_count(u32string_at &str, const u32string_at &chars)
     {
         return str.find_first_not_of(chars);
     }
 
-    std::wstring &comment_trim(std::wstring &str)
+    u32string_at &comment_trim(u32string_at &str)
     {
-        size_t comment_start = str.find_last_of(L"#");
+        size_t comment_start = str.find_last_of(U"#");
 
-        if (comment_start == std::wstring::npos)
+        if (comment_start == u32string_at::npos)
             return str;
 
-        std::wstring before_comment = str.substr(0, comment_start);
+        u32string_at before_comment = str.substr(0, comment_start);
 
-        wchar_t sym_before = ' ';
+        char32_t sym_before = U' ';
         size_t count_sym = 0;
         for (auto sym : before_comment)
         {
-            if (sym == '\"' && sym_before != '\\') // calculate not shielded sym
+            if (sym == U'\"' && sym_before != U'\\') // calculate not shielded sym
                 count_sym++;
         }
 
@@ -159,7 +160,7 @@ namespace at::utils::config_manager::parsing_strategy
             return str.erase(0, comment_start); // # comment
     }
 
-    std::wstring &trim(std::wstring &str, const std::wstring &chars)
+    u32string_at &trim(u32string_at &str, const u32string_at &chars)
     {
         return ltrim(rtrim(str, chars), chars);
     }
