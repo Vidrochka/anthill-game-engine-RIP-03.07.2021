@@ -15,7 +15,18 @@ set(LOGGING
 "./Utils/Logger/ATLoggerManager.cpp"
 )
 
-set(UTILS "./Utils/Utils.hpp" ${LOGGING})
+set(ConfigManager
+"./Utils/ConfigManager/ATConfig.hpp"
+"./Utils/ConfigManager/ATConfig.cpp"
+"./Utils/ConfigManager/ATConfigManager.hpp"
+"./Utils/ConfigManager/ATConfigManager.cpp"
+"./Utils/ConfigManager/ATConfigParsingStrategy.hpp"
+"./Utils/ConfigManager/ATConfigParsingStrategy.cpp"
+"./Utils/ConfigManager/ATConfigSource.hpp"
+"./Utils/ConfigManager/ATConfigSource.cpp"
+)
+
+set(UTILS "./Utils/Utils.hpp" ${LOGGING} ${ConfigManager})
 
 add_executable(main ${EXE} ${UTILS})
 
