@@ -2,29 +2,30 @@
 #include "ATLoggerDefineExtensions.hpp"
 #include <ctime>
 
-using namespace at::utils::logger::event;
+using namespace at::utils::logger_manager::event;
+using namespace at::type::string;
 
-namespace at::utils::logger::strategy
+namespace at::utils::logger_manager::strategy
 {
     namespace log_utils
     {
-        std::string _get_datetime_prefix()
+        u8string_at _get_datetime_prefix()
         {
             time_t now = time(0);
-            char *dt = ctime(&now);
-            std::string s_dt = std::string(dt);
+            std::string raw_dt{ctime(&now)};
+            u8string_at s_dt = u8string_at(raw_dt.begin(), raw_dt.end());
             return "[" + s_dt.substr(0, s_dt.length() - 1) + "]";
         }
     }
 
-    DefaultFileLogStrategy::DefaultFileLogStrategy(std::string file_path, size_t buffer_size)
+    DefaultFileLogStrategy::DefaultFileLogStrategy(u8string_at file_path, size_t buffer_size)
         : _buffer_size(buffer_size)
     {
         _file_path = file_path;
         _file_stream = std::ofstream{file_path, std::ios::app};
 
         if (!_file_stream.is_open())
-            throw std::string("Log file not opened: ") + _file_path;
+            throw u8string_at("Log file not opened: ") + _file_path;
     }
 
     DefaultFileLogStrategy::~DefaultFileLogStrategy()
@@ -33,9 +34,9 @@ namespace at::utils::logger::strategy
         _file_stream.close();
     }
 
-    void DefaultFileLogStrategy::Log(EVENT_TYPE event_type, std::string msg, std::string log_poin)
+    void DefaultFileLogStrategy::Log(EVENT_TYPE event_type, u8string_at msg, u8string_at log_poin)
     {
-        std::string pre_log_buffer;
+        u8string_at pre_log_buffer;
         pre_log_buffer += log_utils::_get_datetime_prefix();
 
         switch (event_type)
@@ -79,6 +80,6 @@ namespace at::utils::logger::strategy
     {
         _file_stream << _log_buffer.str();
         _file_stream.flush();
-        _log_buffer.str(std::string());
+        _log_buffer.str(u8string_at());
     }
 }
