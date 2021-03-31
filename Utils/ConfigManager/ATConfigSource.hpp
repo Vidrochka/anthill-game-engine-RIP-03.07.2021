@@ -1,26 +1,27 @@
 #ifndef at_config_source
 #define at_config_source
 
-#include "../Types/ATString.hpp"
 #include <string>
 #include <fstream>
+#include "../Types/ATString.hpp"
 
 using namespace at::type::string;
 
 namespace at::utils::config_manager::source
 {
-    namespace interface
+    namespace at_interface
     {
         class IConfigSourceInterface
         {
         public:
+            virtual ~IConfigSourceInterface(){};
             virtual u32string_at get_next_line() = 0;
             virtual bool has_next_data() = 0;
             virtual u32string_at get_all_data() = 0;
         };
     }
 
-    class DefaultFileConfigSource : public interface::IConfigSourceInterface
+    class DefaultFileConfigSource : public at_interface::IConfigSourceInterface
     {
     private:
         u32string_at _next_line;
@@ -29,7 +30,7 @@ namespace at::utils::config_manager::source
 
     public:
         DefaultFileConfigSource(u32string_at file_path);
-        ~DefaultFileConfigSource();
+        ~DefaultFileConfigSource() override;
 
         u32string_at get_next_line() override;
         bool has_next_data() override;

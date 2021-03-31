@@ -9,11 +9,11 @@ namespace at::utils::logger_manager
     {
         enum EVENT_TYPE : std::uint_fast8_t
         {
-            DEBUG = 0,
-            INFO = 1,
-            WARNING = 2,
-            ERROR = 3,
-            FATAL = 4,
+            LOG_DEBUG = 0,
+            LOG_INFO = 1,
+            LOG_WARNING = 2,
+            LOG_ERROR = 3,
+            LOG_FATAL = 4,
         };
     }
 }
