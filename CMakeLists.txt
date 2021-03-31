@@ -30,6 +30,11 @@ set(Types
 "./Utils/Types/ATString.hpp"
 )
 
+set_source_files_properties(
+"./Utils/Types/ATString.hpp"
+PROPERTIES
+COMPILE_FLAGS "/wd4996")
+
 set(UTILS "./Utils/Utils.hpp" ${LOGGING} ${ConfigManager} ${Types})
 
 add_executable(main ${EXE} ${UTILS})

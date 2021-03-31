@@ -6,18 +6,19 @@
 
 namespace at::utils::config_manager::source
 {
-    namespace interface
+    namespace at_interface
     {
         class IConfigSourceInterface
         {
         public:
-            virtual std::wstring get_next_line() = 0;
+            virtual ~IConfigSourceInterface(){};
+            virtual u32string_at get_next_line() = 0;
             virtual bool has_next_data() = 0;
             virtual std::wstring get_all_data() = 0;
         };
     }
 
-    class DefaultFileConfigSource : public interface::IConfigSourceInterface
+    class DefaultFileConfigSource : public at_interface::IConfigSourceInterface
     {
     private:
         std::wstring _next_line;
@@ -25,8 +26,8 @@ namespace at::utils::config_manager::source
         bool _has_next_line;
 
     public:
-        DefaultFileConfigSource(std::wstring file_path);
-        ~DefaultFileConfigSource();
+        DefaultFileConfigSource(u32string_at file_path);
+        ~DefaultFileConfigSource() override;
 
         std::wstring get_next_line() override;
         bool has_next_data() override;

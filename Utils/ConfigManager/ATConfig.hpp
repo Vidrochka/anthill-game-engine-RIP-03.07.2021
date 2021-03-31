@@ -3,49 +3,54 @@
 
 #include <string>
 #include <map>
+#include "../Types/ATString.hpp"
+
+using namespace at::type::string;
 
 namespace at::utils::config_manager::config
 {
-    namespace interface
+    namespace at_interface
     {
         class ISection
         {
         public:
-            virtual std::wstring get_value(std::wstring key) = 0;
-            virtual ISection *get_section(std::wstring section_name) = 0;
+            virtual ~ISection() {}
+            virtual u8string_at get_value(u8string_at key) = 0;
+            virtual ISection *get_section(u8string_at section_name) = 0;
         };
 
         class IConfig
         {
         public:
-            virtual ISection *get_section(std::wstring section_name) = 0;
+            virtual ~IConfig() {}
+            virtual ISection *get_section(u8string_at section_name) = 0;
         };
     }
 
-    class DefaultSection : public interface::ISection
+    class DefaultSection : public at_interface::ISection
     {
     private:
-        std::map<std::wstring, std::wstring> _values_map;
-        std::map<std::wstring, interface::ISection *> _sections_map;
+        std::map<u8string_at, u8string_at> _values_map;
+        std::map<u8string_at, at_interface::ISection *> _sections_map;
 
     public:
-        DefaultSection(std::map<std::wstring, std::wstring> values_map, std::map<std::wstring, interface::ISection *> sections_map);
-        ~DefaultSection();
+        DefaultSection(std::map<u8string_at, u8string_at> values_map, std::map<u8string_at, at_interface::ISection *> sections_map);
+        ~DefaultSection() override;
 
-        std::wstring get_value(std::wstring key) override;
-        interface::ISection *get_section(std::wstring section_name) override;
+        u8string_at get_value(u8string_at key) override;
+        at_interface::ISection *get_section(u8string_at section_name) override;
     };
 
-    class DefaultConfig : public interface::IConfig
+    class DefaultConfig : public at_interface::IConfig
     {
     private:
-        std::map<std::wstring, interface::ISection *> _sections_map;
+        std::map<u8string_at, at_interface::ISection *> _sections_map;
 
     public:
-        DefaultConfig(std::map<std::wstring, interface::ISection *> sections_map);
-        ~DefaultConfig();
+        DefaultConfig(std::map<u8string_at, at_interface::ISection *> sections_map);
+        ~DefaultConfig() override;
 
-        interface::ISection *get_section(std::wstring section_name) override;
+        at_interface::ISection *get_section(u8string_at section_name) override;
     };
 }
 
