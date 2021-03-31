@@ -3,6 +3,9 @@
 
 #include <string>
 #include <fstream>
+#include "../Types/ATString.hpp"
+
+using namespace at::type::string;
 
 namespace at::utils::config_manager::source
 {
@@ -14,24 +17,24 @@ namespace at::utils::config_manager::source
             virtual ~IConfigSourceInterface(){};
             virtual u32string_at get_next_line() = 0;
             virtual bool has_next_data() = 0;
-            virtual std::wstring get_all_data() = 0;
+            virtual u32string_at get_all_data() = 0;
         };
     }
 
     class DefaultFileConfigSource : public at_interface::IConfigSourceInterface
     {
     private:
-        std::wstring _next_line;
-        std::wifstream _file_stream;
+        u32string_at _next_line;
+        std::ifstream _file_stream;
         bool _has_next_line;
 
     public:
         DefaultFileConfigSource(u32string_at file_path);
         ~DefaultFileConfigSource() override;
 
-        std::wstring get_next_line() override;
+        u32string_at get_next_line() override;
         bool has_next_data() override;
-        std::wstring get_all_data() override;
+        u32string_at get_all_data() override;
     };
 }
 
