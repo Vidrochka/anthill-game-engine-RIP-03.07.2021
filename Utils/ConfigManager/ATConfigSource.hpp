@@ -9,7 +9,7 @@ using namespace at::type::string;
 
 namespace at::utils::config_manager::source
 {
-    namespace interface
+    namespace at_interface
     {
         class IConfigSourceInterface
         {
@@ -20,7 +20,7 @@ namespace at::utils::config_manager::source
         };
     }
 
-    class DefaultFileConfigSource : public interface::IConfigSourceInterface
+    class DefaultFileConfigSource : public at_interface::IConfigSourceInterface
     {
     private:
         u32string_at _next_line;

@@ -4,7 +4,7 @@ using namespace at::type::string;
 
 namespace at::utils::config_manager::config
 {
-    DefaultSection::DefaultSection(std::map<u8string_at, u8string_at> values_map, std::map<u8string_at, interface::ISection *> sections_map)
+    DefaultSection::DefaultSection(std::map<u8string_at, u8string_at> values_map, std::map<u8string_at, at_interface::ISection *> sections_map)
     {
         _values_map = values_map;
         _sections_map = sections_map;
@@ -21,12 +21,12 @@ namespace at::utils::config_manager::config
         return _values_map[key];
     }
 
-    interface::ISection *DefaultSection::get_section(u8string_at section_name)
+    at_interface::ISection *DefaultSection::get_section(u8string_at section_name)
     {
         return _sections_map[section_name];
     }
 
-    DefaultConfig::DefaultConfig(std::map<u8string_at, interface::ISection *> sections_map)
+    DefaultConfig::DefaultConfig(std::map<u8string_at, at_interface::ISection *> sections_map)
     {
         _sections_map = sections_map;
     }
@@ -37,7 +37,7 @@ namespace at::utils::config_manager::config
             delete section.second;
     }
 
-    interface::ISection *DefaultConfig::get_section(u8string_at section_name)
+    at_interface::ISection *DefaultConfig::get_section(u8string_at section_name)
     {
         return _sections_map[section_name];
     }

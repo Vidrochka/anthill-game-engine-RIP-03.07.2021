@@ -5,13 +5,13 @@
 #include "ATConfigSource.hpp"
 #include "../Types/ATString.hpp"
 
-using namespace at::utils::config_manager::config::interface;
-using namespace at::utils::config_manager::source::interface;
+using namespace at::utils::config_manager::config::at_interface;
+using namespace at::utils::config_manager::source::at_interface;
 using namespace at::type::string;
 
 namespace at::utils::config_manager::parsing_strategy
 {
-    namespace interface
+    namespace at_interface
     {
         class IParsingStrategy
         {
@@ -20,7 +20,7 @@ namespace at::utils::config_manager::parsing_strategy
         };
     }
 
-    class TomlParsingStrategy : public interface::IParsingStrategy
+    class TomlParsingStrategy : public at_interface::IParsingStrategy
     {
     public:
         IConfig *get_config(IConfigSourceInterface *config_source) override;
