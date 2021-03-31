@@ -35,7 +35,7 @@ namespace at::utils::config_manager::config
 
     public:
         DefaultSection(std::map<u8string_at, u8string_at> values_map, std::map<u8string_at, at_interface::ISection *> sections_map);
-        ~DefaultSection() override;
+        ~DefaultSection();
 
         u8string_at get_value(u8string_at key) override;
         at_interface::ISection *get_section(u8string_at section_name) override;
@@ -48,7 +48,7 @@ namespace at::utils::config_manager::config
 
     public:
         DefaultConfig(std::map<u8string_at, at_interface::ISection *> sections_map);
-        ~DefaultConfig() override;
+        ~DefaultConfig();
 
         at_interface::ISection *get_section(u8string_at section_name) override;
     };

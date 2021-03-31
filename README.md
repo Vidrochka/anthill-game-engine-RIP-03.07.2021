@@ -9,7 +9,7 @@ Now, its jast a some kind of trash with plan. Look at the future...
 :white_check_mark: Implement logger strategy interface logic    
 :white_check_mark: Make scoped logger interface    
 :white_check_mark: Implement scoped logger interface logic   
-:white_check_mark: Make normaly unicode [wip]    
+:white_check_mark: Make normaly unicode   
 :black_square_button: Think about async write to buffer [wip]    
 
 ---
@@ -23,9 +23,9 @@ Now, its jast a some kind of trash with plan. Look at the future...
 :black_square_button: Make stream config source realization    
 :white_check_mark: Make parsing strategy Interface    
 :white_check_mark: Make toml parsing strategy realization    
-:black_square_button: Add interface implementation as json/xml loader    
+:black_square_button: Make json/xml parsing strategy realization   
 :white_check_mark: Make config namager processing static function    
-:white_check_mark: Make normaly unicode [wip]    
+:white_check_mark: Make normaly unicode  
 
 ---
 
@@ -191,3 +191,9 @@ Make template function, which will take objects from map and cast in to T type. 
 - If I make something usefull, you can take it for you code
 
 - If you have any idea, I want think with you - Evgenuy1605@yandex.ru
+
+
+---
+
+For test build add folder third_party_libs/boost_1_75_0 with boost libs.    
+I use 1.75.0 version. IDK which is minimal

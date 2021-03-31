@@ -11,4 +11,4 @@
 #include "ConfigManager/ATConfigSource.hpp"
 
 //--------------Castom types--------------//
-//#include "Types/ATString.hpp"
+#include "Types/ATString.hpp"
