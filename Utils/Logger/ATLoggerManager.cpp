@@ -1,15 +1,43 @@
 #include "ATLoggerManager.hpp"
+#include <iostream>
 
-using namespace at::utils::logger_manager::logger::interface;
+using namespace at::utils::logger_manager::logger::at_interface;
 using namespace at::utils::logger_manager::logger;
-using namespace at::utils::logger_manager::strategy::interface;
+using namespace at::utils::logger_manager::strategy::at_interface;
 using namespace at::utils::logger_manager::strategy;
 using namespace at::type::string;
 
 namespace at::utils::logger_manager
 {
-    std::map<u8string_at, logger_context::LoggerContext *> LoggerManager::_logger_context_map{};
-    std::mutex *LoggerManager::_add_new_section_mutex = new std::mutex{};
+    LoggerManager::LoggerManager()
+    {
+        _modify_context_collection_mx = new std::mutex();
+    }
+
+    LoggerManager::~LoggerManager()
+    {
+        flush_all();
+
+        for (auto &&i : _logger_context_map)
+        {
+            bool need_delete = false;
+            {
+                std::lock_guard<std::mutex> lg(i.second->write_mutex);
+                i.second->_owners_counter--;
+
+                if (i.second->_owners_counter == 0)
+                    need_delete = true;
+            } //можно проще сделать без лок гварда, но я хочу так)
+
+            if (need_delete)
+            {
+                delete i.second;
+                i.second = nullptr;
+            }
+        }
+
+        delete _modify_context_collection_mx;
+    }
 
     void LoggerManager::flush_all()
     {
@@ -34,7 +62,7 @@ namespace at::utils::logger_manager
                 return;
         }
 
-        std::lock_guard<std::mutex> lg(*_add_new_section_mutex);
+        std::lock_guard<std::mutex> lg(*_modify_context_collection_mx);
 
         _logger_context_map[log_name] = new logger_context::LoggerContext(strategy);
     }
@@ -44,7 +72,7 @@ namespace at::utils::logger_manager
         if (_logger_context_map.count(log_name) > 0)
             return true;
 
-        std::lock_guard<std::mutex> lg(*_add_new_section_mutex);
+        std::lock_guard<std::mutex> lg(*_modify_context_collection_mx);
 
         if (need_create_if_not_exist)
             _logger_context_map[log_name] = new logger_context::LoggerContext(strategy);
@@ -52,8 +80,14 @@ namespace at::utils::logger_manager
         return false;
     }
 
-    ILogger *LoggerManager::get_logger(u8string_at log_name)
+    AbstractLogger *LoggerManager::get_logger(u8string_at log_name)
     {
-        return new DefaultLogger(_logger_context_map[log_name]);
+        auto context = _logger_context_map[log_name];
+
+        std::lock_guard<std::mutex> lg(context->write_mutex);
+        context->_owners_counter++;
+
+        AbstractLogger *logger = new DefaultLogger(context);
+        return logger;
     }
 }

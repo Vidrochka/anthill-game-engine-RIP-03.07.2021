@@ -16,6 +16,7 @@ namespace at::utils::config_manager::parsing_strategy
         class IParsingStrategy
         {
         public:
+            virtual ~IParsingStrategy() {}
             virtual IConfig *get_config(IConfigSourceInterface *config_source) = 0;
         };
     }
@@ -23,6 +24,7 @@ namespace at::utils::config_manager::parsing_strategy
     class TomlParsingStrategy : public at_interface::IParsingStrategy
     {
     public:
+        ~TomlParsingStrategy() override {}
         IConfig *get_config(IConfigSourceInterface *config_source) override;
     };
 }

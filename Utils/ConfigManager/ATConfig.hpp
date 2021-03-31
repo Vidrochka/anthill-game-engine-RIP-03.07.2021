@@ -14,6 +14,7 @@ namespace at::utils::config_manager::config
         class ISection
         {
         public:
+            virtual ~ISection() {}
             virtual u8string_at get_value(u8string_at key) = 0;
             virtual ISection *get_section(u8string_at section_name) = 0;
         };
@@ -21,6 +22,7 @@ namespace at::utils::config_manager::config
         class IConfig
         {
         public:
+            virtual ~IConfig() {}
             virtual ISection *get_section(u8string_at section_name) = 0;
         };
     }

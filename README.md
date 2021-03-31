@@ -191,3 +191,9 @@ Make template function, which will take objects from map and cast in to T type. 
 - If I make something usefull, you can take it for you code
 
 - If you have any idea, I want think with you - Evgenuy1605@yandex.ru
+
+
+---
+
+For test build add folder third_party_libs/boost_1_75_0 with boost libs.    
+I use 1.75.0 version. IDK which is minimal

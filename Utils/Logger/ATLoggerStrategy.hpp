@@ -9,17 +9,18 @@
 using namespace at::type::string;
 namespace at::utils::logger_manager::strategy
 {
-    namespace interface
+    namespace at_interface
     {
         class ILogStrategy
         {
         public:
+            virtual ~ILogStrategy() {}
             virtual void Log(at::utils::logger_manager::event::EVENT_TYPE event_type, u8string_at msg, u8string_at log_poin = "") = 0;
             virtual void Flush() = 0;
         };
     }
 
-    class DefaultFileLogStrategy : public interface::ILogStrategy
+    class DefaultFileLogStrategy : public at_interface::ILogStrategy
     {
     private:
         std::stringstream _log_buffer;
@@ -30,7 +31,7 @@ namespace at::utils::logger_manager::strategy
 
     public:
         DefaultFileLogStrategy(u8string_at file_path = "./default.log", size_t buffer_size = 1024);
-        ~DefaultFileLogStrategy();
+        ~DefaultFileLogStrategy() override;
         void Log(at::utils::logger_manager::event::EVENT_TYPE event_type, u8string_at msg, u8string_at log_poin = "") override;
         void Flush() override;
     };

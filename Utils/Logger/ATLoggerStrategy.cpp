@@ -41,20 +41,20 @@ namespace at::utils::logger_manager::strategy
 
         switch (event_type)
         {
-        case EVENT_TYPE::DEBUG:
-            pre_log_buffer += TO_STRING(<EVENT_TYPE::DEBUG>);
+        case EVENT_TYPE::LOG_DEBUG:
+            pre_log_buffer += TO_STRING(<EVENT_TYPE::LOG_DEBUG>);
             break;
-        case EVENT_TYPE::INFO:
-            pre_log_buffer += TO_STRING(<EVENT_TYPE::INFO>);
+        case EVENT_TYPE::LOG_INFO:
+            pre_log_buffer += TO_STRING(<EVENT_TYPE::LOG_INFO>);
             break;
-        case EVENT_TYPE::WARNING:
-            pre_log_buffer += TO_STRING(<EVENT_TYPE::WARNING>);
+        case EVENT_TYPE::LOG_WARNING:
+            pre_log_buffer += TO_STRING(<EVENT_TYPE::LOG_WARNING>);
             break;
-        case EVENT_TYPE::ERROR:
-            pre_log_buffer += TO_STRING(<EVENT_TYPE::ERROR>);
+        case EVENT_TYPE::LOG_ERROR:
+            pre_log_buffer += TO_STRING(<EVENT_TYPE::LOG_ERROR>);
             break;
-        case EVENT_TYPE::FATAL:
-            pre_log_buffer += TO_STRING(<EVENT_TYPE::FATAL>);
+        case EVENT_TYPE::LOG_FATAL:
+            pre_log_buffer += TO_STRING(<EVENT_TYPE::LOG_FATAL>);
             break;
         }
 

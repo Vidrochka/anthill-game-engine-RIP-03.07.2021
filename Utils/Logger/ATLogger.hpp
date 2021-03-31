@@ -15,16 +15,43 @@
 #include <functional>
 
 using namespace at::utils::logger_manager::strategy;
-using namespace at::utils::logger_manager::strategy::interface;
+using namespace at::utils::logger_manager::strategy::at_interface;
 using namespace at::type::string;
 
 namespace at::utils::logger_manager::logger
 {
-    namespace interface
+    namespace at_interface
     {
-        class ILogger
+        class AbstractLogger
         {
+        protected:
+            logger_context::LoggerContext *_logger_context = nullptr;
+
+        private:
+            AbstractLogger();
+
         public:
+            AbstractLogger(logger_context::LoggerContext *context)
+            {
+                _logger_context = context;
+            }
+            ~AbstractLogger()
+            {
+                bool need_delete = false;
+                {
+                    std::lock_guard<std::mutex> lg(_logger_context->write_mutex);
+                    _logger_context->_owners_counter--;
+
+                    if (_logger_context->_owners_counter == 0)
+                        need_delete = true;
+                } //можно проще сделать без лок гварда, но я хочу так)
+
+                if (need_delete)
+                {
+                    delete _logger_context;
+                    _logger_context = nullptr;
+                }
+            };
             //log debug to corrent logger
             virtual void log_debug(u8string_at msg, u8string_at log_poin = "") = 0;
             //log info to corrent logger
@@ -42,14 +69,12 @@ namespace at::utils::logger_manager::logger
         };
     }
 
-    class DefaultLogger : public interface::ILogger
+    class DefaultLogger : public at_interface::AbstractLogger
     {
     private:
         void _log(u8string_at msg, event::EVENT_TYPE event_type, u8string_at log_poin = "");
         void _flush();
         void _add_strategy(ILogStrategy *strategy);
-
-        logger_context::LoggerContext *_logger_context = nullptr;
 
     public:
         //logger with logging in log_section
