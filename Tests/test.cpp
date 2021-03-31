@@ -1,5 +1,5 @@
 #define BOOST_TEST_MODULE MyTest
-#include "P:/boost/2021-03-30/boost_1_75_0/boost/test/included/unit_test.hpp"
+#include "../third_party_libs/boost_1_75_0/boost/test/included/unit_test.hpp"
 
 BOOST_AUTO_TEST_CASE(first_test)
 {

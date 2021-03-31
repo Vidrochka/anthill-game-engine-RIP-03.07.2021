@@ -5,6 +5,7 @@ project(atge)
 set (TESTS_SOURCES
 	"./test.cpp")
 
+set (BOOST_ROOT "../third_party_libs/boost_1_75_0")
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
