@@ -17,7 +17,7 @@ int main()
         logger->log_debug("b test 1 дда 佐藤 幹夫 ");
         logger->log_error("test 2");
         std::cout << "1" << std::endl;
-        at::utils::config_system::source::at_interface::IConfigSourceInterface *source = new at::utils::config_system::source::DefaultFileConfigSource(U"./test.toml");
+        at::utils::config_system::source::at_interface::IConfigSourceInterface *source = new at::utils::config_system::source::DefaultFileConfigSource("./test.toml");
         std::cout << "2" << std::endl;
         at::utils::config_system::parsing_strategy::at_interface::IParsingStrategy *strategy = new at::utils::config_system::parsing_strategy::TomlParsingStrategy();
         std::cout << "3" << std::endl;
