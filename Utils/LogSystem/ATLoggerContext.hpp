@@ -5,10 +5,10 @@
 #include <vector>
 #include <mutex>
 
-using namespace at::utils::logger_manager::strategy::at_interface;
-using namespace at::utils::logger_manager::strategy;
+using namespace at::utils::log_system::strategy::at_interface;
+using namespace at::utils::log_system::strategy;
 
-namespace at::utils::logger_manager
+namespace at::utils::log_system
 {
     namespace logger_context
     {

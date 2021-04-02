@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-namespace at::utils::logger_manager
+namespace at::utils::log_system
 {
     namespace event
     {

@@ -5,11 +5,11 @@
 #include "ATConfigSource.hpp"
 #include "../Types/ATString.hpp"
 
-using namespace at::utils::config_manager::config::at_interface;
-using namespace at::utils::config_manager::source::at_interface;
+using namespace at::utils::config_system::config::at_interface;
+using namespace at::utils::config_system::source::at_interface;
 using namespace at::type::string;
 
-namespace at::utils::config_manager::parsing_strategy
+namespace at::utils::config_system::parsing_strategy
 {
     namespace at_interface
     {

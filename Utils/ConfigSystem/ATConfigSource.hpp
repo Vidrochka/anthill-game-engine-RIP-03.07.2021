@@ -7,7 +7,7 @@
 
 using namespace at::type::string;
 
-namespace at::utils::config_manager::source
+namespace at::utils::config_system::source
 {
     namespace at_interface
     {
@@ -15,26 +15,27 @@ namespace at::utils::config_manager::source
         {
         public:
             virtual ~IConfigSourceInterface(){};
-            virtual u32string_at get_next_line() = 0;
-            virtual bool has_next_data() = 0;
+            virtual u32string_at get_line() = 0;
+            virtual bool move_to_next_line() = 0;
             virtual u32string_at get_all_data() = 0;
+            virtual void reset() = 0;
         };
     }
 
     class DefaultFileConfigSource : public at_interface::IConfigSourceInterface
     {
     private:
-        u32string_at _next_line;
+        u32string_at _line;
         std::ifstream _file_stream;
-        bool _has_next_line;
 
     public:
-        DefaultFileConfigSource(u32string_at file_path);
+        DefaultFileConfigSource(u8string_at file_path);
         ~DefaultFileConfigSource() override;
 
-        u32string_at get_next_line() override;
-        bool has_next_data() override;
+        u32string_at get_line() override;
+        bool move_to_next_line() override;
         u32string_at get_all_data() override;
+        void reset() override;
     };
 }
 
