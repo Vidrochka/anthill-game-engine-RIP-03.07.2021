@@ -7,7 +7,7 @@
 #include <fstream>
 
 using namespace at::type::string;
-namespace at::utils::logger_manager::strategy
+namespace at::utils::log_system::strategy
 {
     namespace at_interface
     {
@@ -15,7 +15,7 @@ namespace at::utils::logger_manager::strategy
         {
         public:
             virtual ~ILogStrategy() {}
-            virtual void Log(at::utils::logger_manager::event::EVENT_TYPE event_type, u8string_at msg, u8string_at log_poin = "") = 0;
+            virtual void Log(at::utils::log_system::event::EVENT_TYPE event_type, u8string_at msg, u8string_at log_poin = "") = 0;
             virtual void Flush() = 0;
         };
     }
@@ -32,7 +32,7 @@ namespace at::utils::logger_manager::strategy
     public:
         DefaultFileLogStrategy(u8string_at file_path = "./default.log", size_t buffer_size = 1024);
         ~DefaultFileLogStrategy() override;
-        void Log(at::utils::logger_manager::event::EVENT_TYPE event_type, u8string_at msg, u8string_at log_poin = "") override;
+        void Log(at::utils::log_system::event::EVENT_TYPE event_type, u8string_at msg, u8string_at log_poin = "") override;
         void Flush() override;
     };
 }

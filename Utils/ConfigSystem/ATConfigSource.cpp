@@ -1,14 +1,14 @@
 #include "ATConfigSource.hpp"
 #include <sstream>
+#include <iostream>
 
 using namespace at::type::string;
 
-namespace at::utils::config_manager::source
+namespace at::utils::config_system::source
 {
-    DefaultFileConfigSource::DefaultFileConfigSource(u32string_at file_path)
+    DefaultFileConfigSource::DefaultFileConfigSource(u8string_at file_path)
     {
-        _file_stream = std::ifstream(u32_to_u8_at(file_path));
-        get_next_line();
+        _file_stream = std::ifstream(file_path);
     }
 
     DefaultFileConfigSource::~DefaultFileConfigSource()
@@ -16,24 +16,24 @@ namespace at::utils::config_manager::source
         _file_stream.close();
     }
 
-    u32string_at DefaultFileConfigSource::get_next_line()
+    u32string_at DefaultFileConfigSource::get_line()
     {
-        u32string_at res_line = _next_line;
+        return _line;
+    }
+
+    bool DefaultFileConfigSource::move_to_next_line()
+    {
+        bool has_next_line;
 
         u8string_at buff{};
         // idk how it work. if you know, change to one line like _has_next_line = std::getline()
         if (std::getline(_file_stream, buff))
-            _has_next_line = true;
+            has_next_line = true;
         else
-            _has_next_line = false;
+            has_next_line = false;
 
-        _next_line = u8_to_u32_at(buff);
-        return res_line;
-    }
-
-    bool DefaultFileConfigSource::has_next_data()
-    {
-        return _has_next_line;
+        _line = u8_to_u32_at(buff);
+        return has_next_line;
     }
 
     u32string_at DefaultFileConfigSource::get_all_data()
@@ -47,7 +47,13 @@ namespace at::utils::config_manager::source
         _file_stream.seekg(0, std::ios::beg);
         _file_stream.read(buffer, length);
 
+#pragma warning(suppress : 4244)
         _file_stream.seekg(0, read_pos);
         return u8_to_u32_at(u8string_at(buffer));
+    }
+
+    void DefaultFileConfigSource::reset()
+    {
+        _file_stream.seekg(0, std::ios::beg);
     }
 }

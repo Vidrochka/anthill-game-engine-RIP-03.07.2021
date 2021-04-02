@@ -5,195 +5,210 @@ Now, its jast a some kind of trash with plan. Look at the future...
 # Goals
 
 - #### Logging
-:white_check_mark: Make logger strategy interface    
-:white_check_mark: Implement logger strategy interface logic    
-:white_check_mark: Make scoped logger interface    
-:white_check_mark: Implement scoped logger interface logic   
-:white_check_mark: Make normaly unicode   
-:black_square_button: Think about async write to buffer [wip]    
+:white_check_mark: Добавить интерфейс менеджера логов    
+:white_check_mark: Реализовать интерфейс менеджера логов    
+:white_check_mark: Добавить общий интерфейс стратерии логирования    
+:white_check_mark: Реализовать интерфейс стратерии логирования в файл с простым буфферизированием     
+:white_check_mark: Добавить общий интерфейс логгера    
+можно спавнить множество логгеров для одного контекста с стратегиями, т.е. писать из разных частей системы в один лог
+:white_check_mark: Сделать простую реализоцию лога  
+:white_check_mark: Добавить поддержку юникода    
+По факту используется обычный string, если я не правильно сделал, прошу мне сообщить. Если еще и скажете как сделать правильно, то вообще респект будет
+:black_square_button: Подумать об асинковой записи в лог. Пока не до этого, вернусь позже *помощь тут приветствуется* [freez]    
 
 ---
 
 - ### Config manager
 
-:white_check_mark: Make Config and Section Interface    
-:white_check_mark: Make default realization config and section Interface    
-:white_check_mark: Make Config source Interface    
-:white_check_mark: Make file config source realization    
-:black_square_button: Make stream config source realization    
-:white_check_mark: Make parsing strategy Interface    
-:white_check_mark: Make toml parsing strategy realization    
-:black_square_button: Make json/xml parsing strategy realization   
-:white_check_mark: Make config namager processing static function    
-:white_check_mark: Make normaly unicode  
+:white_check_mark: Добавить интерфейсы конфига и серций конфига    
+:white_check_mark: Сделать базовы имплементации интерфейсов конфига и секции    
+:white_check_mark: Добавить интерфейс источника данных     
+:white_check_mark: Сделать реализацию источника из файла    
+:black_square_button: Сделать реализацию источника из стрима *пока не надо, по этому отложил* [freez]    
+:black_square_button: Сделать реализацию источника из базы (sqlite) *пока не надо, по этому отложил* [freez]    
+:white_check_mark: Добавить интерфейс стратегии парсинга     
+:white_check_mark: Сделать реализацию парсинга toml     
+Он мне больше всего нравится, по этому реализован в первую очередь, но не спорю что кривовато    
+Странные трансформации с u8 в u32 и обратно сделаны для возможности использовать regex для работы с char32_t как с отдельным unicode символом,     
+но при этом мы храним как utf8 для экономии памяти. Мб костыльно, но работает и не надо тянуть зависимости библиотек работы с unicode    
+:black_square_button: Сделать реализацию парсинга json/xml/yaml *пока не надо, по этому отложил* [freez]    
+:white_check_mark: Добавить статические функции менеджеа конфигов     
+По сути сделано для удобочитаемости кода объединения стратегии и источника, то же самое можно сделать в коде    
 
 ---
 
+- ### Window manager
+
+:black_square_button: Реализовать класс работы с оконной системой SDL2    
+:black_square_button: Добавить пожддержку сногооконной системы
+
+---
+
+- ### Gui system
+
+:black_square_button: Понять как ImGui реализует отрисовку независимую от оконных систем     
+:black_square_button: Частично копипастить систему ImGui с правками для реализации системы виджетов     
+Как сделствие реализовать свои способы позиционирования элементов имплементированные в отдельные классы виджетов
+:black_square_button: Добавить вывод текста через sdl2 ttf lib
+:black_square_button: Сделать парсер xml дерева для загрузки разметки изображения из xml файла     
+Необходимо для загрузки макета из динамических библиотек редакторов    
+
+:black_square_button: Добавить поддержку отрисовки на нескольких окнах     
+Пока не уверен что возможно пудет с планируемой логикой, но в процессе увидем
+
+---
+
+- ### Project open/create
+
+:black_square_button: Добавить стартовое окно открытия или создания проекта. Предпологаемый тип файла проекта .atproj    
+
+---
+
+- ### Core + core provider
+:black_square_button: Реализовать общий класс объединяющий все вместе    
+:black_square_button: Спроектировать класс - обертку для удобного использования из редактора бункционала движка    
+Пока хз как правильно сделать, нодо думать
+
+---
+
+- ### Editor loader
+
+:black_square_button: Добавить систему которая загружает dll в рантайме, получает из нее строку с разметкой редактора    
+Привязка на стобытия виджетов будет реализована через имена функций из разметки. Из dll достаются функции по названию из разметки и кстанавливаются как коллбек для виджета
+
+---
+
+Пояснение идеи с редакторами: вся логика по сути крутится на объектах. Все на карте можно описать как объект + логика + система которая все связывает    
+Каждый проект имеет отдельную базу sqlite. В базе есть таблица объектов (название + id)    
+Отдельные редакторы добавляют свойства объекта. К примеру редактор 3d модели может добавить в базу 3D модель в отдельную таблицу и в последствии установить в таблице-соединители связь объекта и 3D мождели через fk на объект и на модель
+Помимо редакторов в базе будет таблица с конфигурацией объекта, по которой при создании скрипта для объекта будет сгенерирован файл с dto, заполненный данными. Таким образом можно будет для отного объекта установить отдельные настройки.
+Особняком стоит редактор карты, который будет сохранять в базе отдельные чанки + привязанные к ним объекты с отдельными конфигами и настройками размещения и масштабирования    
+Разделения на уровни не будет, все будет сделано в рамках чанков. Чанк подгружает те чанки, которые указаны в конфиге чанка    
+Таким образом если необходимо выгрузить текущую локацию и загрузить другую, то устанавливаем первому чанку в настройках подгружать нужный чанк, а в новом ставим не подргужать прошлые. Таким образом можно реализовать бесшовную подгрузку локаций    
+Отдельные детали реализации будут описаны в процессе    
+
+---
+
+- ### Editor switcher
+
+:black_square_button: Реализовать систему для смены реадкторов    
+:black_square_button: Добавить по нажатию на таб окно блюра + колесо с выбором редактора    
+
+---
+
+- ### Db manager
+
+:black_square_button: Реализовать менелжер базы для удобной работы из редакторов (тут отсылка к core provider)     
+
+---
 - ### Zip undixing utils
 
-:black_square_button: Add zip undixing interface    
-:black_square_button: Make logic    
+:black_square_button: Добавить утилиту в core provider для работы с архивами (мб замутить свой тип архива? Подумаем ...)    
 
 ---
 
 - ### File manager
 
-:black_square_button: Add interface for loading files    
-:black_square_button: Inplement interface    
-
-- As stream
-- As simple file discriptor
-
-:black_square_button: Make Zip utils as part of manager    
-
----
-
-- ### Engine core
-
-:black_square_button: Make core :)    
-<details>
-    <summary>Core structure</summary>
-
-Methids:
-
-- Initialize
-- Load modules (use next point)
-- Cycle
-
----
-
-Contain:
-
-- Module map (standart module will set like interfase, other like {string dll name: void\*) )
-- Config manager
-
-</details>
-
----
-
-- ### Module loading
-  | Make wrapper for winapi hot(runtime) dll loading |
-
-:black_square_button: Define shared module interfase    
-:black_square_button: Think about key kripted libs (loader will uncript libs and load in memory, is it real???)    
-:black_square_button: Make Logging/File manager as modules    
-
-<details>
-    <summary>Module logic</summary>
-
-- All midule load as dll in runtime
-- All module must contain interface in .hpp file (for cast and usage in code)
-- All module contain function:
-
-  1. Load (take pointer to core; build module and return it like void\*)
-  2. Unload (take void\* to mudule and distruct it)
-
-- Some module can contain functions:
-  1. Tick with time after last tick
-
-</details>
-
----
-
-- ### Window manager (as module)
-
-:black_square_button: Make window class interface    
-:black_square_button: Implenment interface with SDL2    
-
----
-
-- ### Gui system (as module)
-
-:black_square_button: Understand how imgui framework independent    
-:black_square_button: Steal some gui code)) and make widget system    
-
-- Add layout widgets
-- Make font loading with sdl2 ttf lib
-
-:black_square_button: Understand how process two window    
-
----
-
-- ### Core part 2
-
-:black_square_button: Add to core opening window with views:    
-
-- Make project
-- Open project
-
-:black_square_button: Make project file    
-
-<details>
-    <summary>Project file format</summary>
-    Here will be project files format :)
-</details>
+:black_square_button: Возможно добавить утилиту для более удобной работы с файлами из редакторов     
+Будет видно по факту на сколько оно надо. Мб объединится с логикой Zip фрхивов     
 
 ---
 
 - ### Resource manager
 
-:black_square_button: Make interface for objects manager    
-:black_square_button: Make logic (use File manager with zip logic for loading data)    
+:black_square_button: Это что-то около работы с файловым менеджером     
+Скорее всего будет отдельная абстракция для работы с разными предустановленными типами ресурсов по типу картинок. Сохранение в базу + взаимодействие с ними из скриптов. Возможно будет модульная система которая грузит файлы + сохраняет их тип и метданные для работы, реазируется как runtime dll load + паттерн стратеги  
 
 ---
 
 - ### Render system
 
-:black_square_button: Load object with resource manager and draw it    
-      | It will not so simple, I know that we need some game object abstruction, but... its for test and some expiriance, idk how it realize |
-
-:black_square_button: Make here points goals    
+:black_square_button: Надо к гуи системе дореализовать рендер 3D объектов с блэкджеком и заданием шейдеров 
 
 ---
 
-- ### Core part 3
+- ### Object view editor
 
-:black_square_button: Add button wich open window and use Render system for test drawing objects    
+Все было указано +- в поряде реализации, но это надо сделать как только будет достаточно утилит для реализации     
+По сути когда реализую систему редакторов, надо будет первым делом реализовать этот редактор и на нем смотреть чего нехватает    
 
----
-
-- ### Make some object ubstruction. I think it will be different game objects manager with void\* to castom data and observer like script logic, need thinks
-<details>
-    <summary>Thoughts</summary>
-Make template function, which will take objects from map and cast in to T type. Idk how it make better, need some ideas
-</details>
+:black_square_button: Реализовать редактор 3D объектов    
+:black_square_button: Один из пунктов это просмотр объекта с установленными шейдерами
+Возможно будет редактор шейдеров, но это прям далекое будещее, пока скорее текстовый редактор))) 
 
 ---
 
-- ### Physics system
+- ### Map editor
 
-:black_square_button: Chose and add Physics engine like module    
+:black_square_button: Реализовать систему рендера размещенных объектов на карте
+:black_square_button: Реализовать по нажатию на прпавую кнопку меню с выбором объектов или редактированием выбранного объекта на карте    
+Редактирование сводится к манипуляции с конфигом для задания отдельных свойств объекта    
+
+:black_square_button: Добавить добавление чанков на карту и запретитьдобавление объектов вне чанков    
+:black_square_button: Реализовать логику связей прогрузки чанков. Будет односторонняя связь между текущим чанком и какие подгружать находясь в нем    
+
+:black_square_button: Добавить в меню правой кнопки раздел с включением определенной логики для объектов    
+Т.е. можно будет включить обработку рендера для отдельных источников света и объектов со всеми шейдерами, при этом не обрабатывая лишние объекты. Или включить просчет физики для тестов азаимодействия объектов
+
+---
+
+- ### Physic edicor
+
+:black_square_button: Взять готовый физический движок и вприсать его в рамки редактора\
+:black_square_button: Добавить моделирование физики в редакторе карты
 
 ---
 
 - ### Script system
 
-:black_square_button: Make single storage, which will contain map with pointer to scripts    
-:black_square_button: In develop mode it will be different dll, which load in runtime and observe some game object; In release build its one dll for language, from which we load logic    
-      | And this chose cool, because: we can use C++/C/Rust/Go/etc with C abi in one time!!! We even can make module which load python intrpreter and then we make script which call python script from this module. Yes, im crazy :) |
+:black_square_button: Реализовать редактор скриптов    
+Генерится файл с DTO на основе конфига в базе для текущего объекта + .hpp и .cpp файл логики в которых можно писать скрипт    
+В скрипт будет передаваться объект core provider для использования различных утилит + объект представляющий данный объект в коллекции объектов    
+Из скриптов через core provider можно будет получить объекты из коллекции и редактировать их свойства/конфиги    
+Не совсем удобно будет если конфиги будут храниться как void* , тогда прийдется их кастить к (заранее известном) типу конфига объекта         
+Это так же влечет за собой необходимость при написании скрипта иметь хедер на DTO конфига редактируемого объекта   
+Альтернативный вариант сделать секционные конфиги с полями union, но тогда прийдется смириться с оверхедом памяти при хранении мелких значений. Но это выгляит куда лучше
+Возможно можно в union хранить ссылки на кучу с объектами конфига, тогда оверхеда в union не будет, но не уверен что так выйдет, хотя конкретных проблем пока не вижу    
 
 ---
 
 - ### Make build system
 
-:black_square_button: System will generate all artefacts    
+:black_square_button: Сделать систему сборки артефактов, возможно интегрировать с редактором карт для запуска логики отдельных объектов    
+
+---
+
+- ### Tests
+
+Эта штука как постоянная задача с пополняющимися пунктами
+
+:white_check_mark: Тест мнеджера конфигов с 1 секцией и 1 элементов в ней [.toml]
+:white_check_mark: Тест мнеджера конфигов с 2 секциями по 1 элементу в каждой [.toml]
+:white_check_mark: Тест мнеджера конфигов с 2 секциями в второй секции вложенная секция с 1 элементом [.toml]
+:white_check_mark: Тест создания лога и уничтожение до уничтожения менеджера логов
+:white_check_mark: Тест создания лога и уничтожение после уничтожения менеджера логов
+:white_check_mark: Тест лога info
+:white_check_mark: Тест лога debug
+:white_check_mark: Тест лога error
+:white_check_mark: Тест лога warning
+:white_check_mark: Тест лога fatal
+:black_square_button: Тестить все что есть
 
 ---
 
 - ### Some other trash :)
 
-:black_square_button: IDK, ist will be in next time    
+:black_square_button: Еще много надо сделать помимо описаного, но все описывать будет слишком долго, добавлю в процессе    
 
 ---
 
-- I think about node generated libs. If I find way how to make it, we will can change render system or something other module for engine and release artefact as a simple grapth.
 
-- If I make something usefull, you can take it for you code
 
-- If you have any idea, I want think with you - Evgenuy1605@yandex.ru
+- Если что-то из этого окажется полезным, то просьба сообщить мне об этом для роста моего чсв) 
+
+- Если есть какие-то идеи всегда приветствую - Evgenuy1605@yandex.ru
 
 
 ---
 
-For test build add folder third_party_libs/boost_1_75_0 with boost libs.    
-I use 1.75.0 version. IDK which is minimal
+Из зависимостей пока только boost_1.75.0 и стандартная либа

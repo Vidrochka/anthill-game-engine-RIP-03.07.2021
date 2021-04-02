@@ -14,11 +14,11 @@
 #include <vector>
 #include <functional>
 
-using namespace at::utils::logger_manager::strategy;
-using namespace at::utils::logger_manager::strategy::at_interface;
+using namespace at::utils::log_system::strategy;
+using namespace at::utils::log_system::strategy::at_interface;
 using namespace at::type::string;
 
-namespace at::utils::logger_manager::logger
+namespace at::utils::log_system::logger
 {
     namespace at_interface
     {
@@ -35,7 +35,7 @@ namespace at::utils::logger_manager::logger
             {
                 _logger_context = context;
             }
-            ~AbstractLogger()
+            virtual ~AbstractLogger()
             {
                 bool need_delete = false;
                 {
@@ -79,7 +79,7 @@ namespace at::utils::logger_manager::logger
     public:
         //logger with logging in log_section
         DefaultLogger(logger_context::LoggerContext *logger_info);
-        ~DefaultLogger();
+        ~DefaultLogger() override;
 
         //log debug to corrent logger
         void log_debug(u8string_at msg, u8string_at log_poin = "") override;

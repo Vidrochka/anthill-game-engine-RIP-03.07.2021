@@ -7,7 +7,7 @@
 
 using namespace at::type::string;
 
-namespace at::utils::config_manager::config
+namespace at::utils::config_system::config
 {
     namespace at_interface
     {
@@ -17,6 +17,7 @@ namespace at::utils::config_manager::config
             virtual ~ISection() {}
             virtual u8string_at get_value(u8string_at key) = 0;
             virtual ISection *get_section(u8string_at section_name) = 0;
+            virtual u8string_at to_debug_string() = 0;
         };
 
         class IConfig
@@ -24,6 +25,7 @@ namespace at::utils::config_manager::config
         public:
             virtual ~IConfig() {}
             virtual ISection *get_section(u8string_at section_name) = 0;
+            virtual u8string_at to_debug_string() = 0;
         };
     }
 
@@ -35,10 +37,11 @@ namespace at::utils::config_manager::config
 
     public:
         DefaultSection(std::map<u8string_at, u8string_at> values_map, std::map<u8string_at, at_interface::ISection *> sections_map);
-        ~DefaultSection();
+        ~DefaultSection() override;
 
         u8string_at get_value(u8string_at key) override;
         at_interface::ISection *get_section(u8string_at section_name) override;
+        u8string_at to_debug_string() override;
     };
 
     class DefaultConfig : public at_interface::IConfig
@@ -48,9 +51,10 @@ namespace at::utils::config_manager::config
 
     public:
         DefaultConfig(std::map<u8string_at, at_interface::ISection *> sections_map);
-        ~DefaultConfig();
+        ~DefaultConfig() override;
 
         at_interface::ISection *get_section(u8string_at section_name) override;
+        u8string_at to_debug_string() override;
     };
 }
 
