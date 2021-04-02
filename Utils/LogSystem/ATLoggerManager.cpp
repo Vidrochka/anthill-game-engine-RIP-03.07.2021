@@ -1,13 +1,13 @@
 #include "ATLoggerManager.hpp"
 #include <iostream>
 
-using namespace at::utils::logger_manager::logger::at_interface;
-using namespace at::utils::logger_manager::logger;
-using namespace at::utils::logger_manager::strategy::at_interface;
-using namespace at::utils::logger_manager::strategy;
+using namespace at::utils::log_system::logger::at_interface;
+using namespace at::utils::log_system::logger;
+using namespace at::utils::log_system::strategy::at_interface;
+using namespace at::utils::log_system::strategy;
 using namespace at::type::string;
 
-namespace at::utils::logger_manager
+namespace at::utils::log_system
 {
     LoggerManager::LoggerManager()
     {

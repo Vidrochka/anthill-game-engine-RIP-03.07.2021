@@ -5,25 +5,25 @@ project(atge)
 set(EXE "./main.cpp")
 
 set(LOGGING 
-"./Utils/Logger/ATLogger.hpp" 
-"./Utils/Logger/ATLogger.cpp" 
-"./Utils/Logger/ATLoggerDefineExtensions.hpp" 
-"./Utils/Logger/ATLoggerEvent.hpp"
-"./Utils/Logger/ATLoggerStrategy.hpp"
-"./Utils/Logger/ATLoggerStrategy.cpp"
-"./Utils/Logger/ATLoggerManager.hpp"
-"./Utils/Logger/ATLoggerManager.cpp"
+"./Utils/LogSystem/ATLogger.hpp" 
+"./Utils/LogSystem/ATLogger.cpp" 
+"./Utils/LogSystem/ATLoggerDefineExtensions.hpp" 
+"./Utils/LogSystem/ATLoggerEvent.hpp"
+"./Utils/LogSystem/ATLoggerStrategy.hpp"
+"./Utils/LogSystem/ATLoggerStrategy.cpp"
+"./Utils/LogSystem/ATLoggerManager.hpp"
+"./Utils/LogSystem/ATLoggerManager.cpp"
 )
 
-set(ConfigManager
-"./Utils/ConfigManager/ATConfig.hpp"
-"./Utils/ConfigManager/ATConfig.cpp"
-"./Utils/ConfigManager/ATConfigManager.hpp"
-"./Utils/ConfigManager/ATConfigManager.cpp"
-"./Utils/ConfigManager/ATConfigParsingStrategy.hpp"
-"./Utils/ConfigManager/ATConfigParsingStrategy.cpp"
-"./Utils/ConfigManager/ATConfigSource.hpp"
-"./Utils/ConfigManager/ATConfigSource.cpp"
+set(ConfigSystem
+"./Utils/ConfigSystem/ATConfig.hpp"
+"./Utils/ConfigSystem/ATConfig.cpp"
+"./Utils/ConfigSystem/ATConfigManager.hpp"
+"./Utils/ConfigSystem/ATConfigManager.cpp"
+"./Utils/ConfigSystem/ATConfigParsingStrategy.hpp"
+"./Utils/ConfigSystem/ATConfigParsingStrategy.cpp"
+"./Utils/ConfigSystem/ATConfigSource.hpp"
+"./Utils/ConfigSystem/ATConfigSource.cpp"
 )
 
 set(Types
@@ -35,7 +35,7 @@ set_source_files_properties(
 PROPERTIES
 COMPILE_FLAGS "/wd4996")
 
-set(UTILS "./Utils/Utils.hpp" ${LOGGING} ${ConfigManager} ${Types})
+set(UTILS "./Utils/Utils.hpp" ${LOGGING} ${ConfigSystem} ${Types})
 
 add_executable(main ${EXE} ${UTILS})
 

@@ -2,16 +2,17 @@
 #include "ATLoggerDefineExtensions.hpp"
 #include <ctime>
 
-using namespace at::utils::logger_manager::event;
+using namespace at::utils::log_system::event;
 using namespace at::type::string;
 
-namespace at::utils::logger_manager::strategy
+namespace at::utils::log_system::strategy
 {
     namespace log_utils
     {
         u8string_at _get_datetime_prefix()
         {
             time_t now = time(0);
+#pragma warning(suppress : 4996)
             std::string raw_dt{ctime(&now)};
             u8string_at s_dt = u8string_at(raw_dt.begin(), raw_dt.end());
             return "[" + s_dt.substr(0, s_dt.length() - 1) + "]";

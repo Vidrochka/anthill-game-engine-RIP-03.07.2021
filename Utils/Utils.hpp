@@ -1,14 +1,16 @@
+#define DEBUG_UTILS
+
 //--------------Logging--------------//
-#include "Logger/ATLoggerDefineExtensions.hpp"
-#include "Logger/ATLogger.hpp"
-#include "Logger/ATLoggerStrategy.hpp"
-#include "Logger/ATLoggerManager.hpp"
+#include "LogSystem/ATLoggerDefineExtensions.hpp"
+#include "LogSystem/ATLogger.hpp"
+#include "LogSystem/ATLoggerStrategy.hpp"
+#include "LogSystem/ATLoggerManager.hpp"
 
 //--------------Config manager--------------//
-#include "ConfigManager/ATConfig.hpp"
-#include "ConfigManager/ATConfigManager.hpp"
-#include "ConfigManager/ATConfigParsingStrategy.hpp"
-#include "ConfigManager/ATConfigSource.hpp"
+#include "ConfigSystem/ATConfig.hpp"
+#include "ConfigSystem/ATConfigManager.hpp"
+#include "ConfigSystem/ATConfigParsingStrategy.hpp"
+#include "ConfigSystem/ATConfigSource.hpp"
 
 //--------------Castom types--------------//
 #include "Types/ATString.hpp"

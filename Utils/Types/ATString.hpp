@@ -19,6 +19,7 @@ namespace at::type::string
     {
 #pragma warning(suppress : 4996)
         std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> conv;
+#pragma warning(suppress : 4996)
         return conv.to_bytes(s);
     }
 
@@ -26,6 +27,7 @@ namespace at::type::string
     {
 #pragma warning(suppress : 4996)
         std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;
+#pragma warning(suppress : 4996)
         return conv.to_bytes(s);
     }
 
@@ -33,6 +35,7 @@ namespace at::type::string
     {
 #pragma warning(suppress : 4996)
         std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> conv;
+#pragma warning(suppress : 4996)
         return conv.from_bytes(s);
     }
 
@@ -40,6 +43,7 @@ namespace at::type::string
     {
 #pragma warning(suppress : 4996)
         std::wstring_convert<std::codecvt_utf16<char32_t>, char32_t> conv;
+#pragma warning(suppress : 4996)
         std::string bytes = conv.to_bytes(s);
         return std::u16string(reinterpret_cast<const char16_t *>(bytes.c_str()), bytes.length() / sizeof(char16_t));
     }
@@ -48,6 +52,7 @@ namespace at::type::string
     {
 #pragma warning(suppress : 4996)
         std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;
+#pragma warning(suppress : 4996)
         return conv.from_bytes(s);
     }
 
@@ -57,6 +62,7 @@ namespace at::type::string
 
 #pragma warning(suppress : 4996)
         std::wstring_convert<std::codecvt_utf16<char32_t>, char32_t> conv;
+#pragma warning(suppress : 4996)
         return conv.from_bytes(reinterpret_cast<const char *>(pData), reinterpret_cast<const char *>(pData + s.length()));
     }
 

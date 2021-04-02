@@ -2,11 +2,11 @@
 #include <ctime>
 #include <stdexcept>
 
-using namespace at::utils::logger_manager::strategy;
-using namespace at::utils::logger_manager::strategy::at_interface;
+using namespace at::utils::log_system::strategy;
+using namespace at::utils::log_system::strategy::at_interface;
 using namespace at::type::string;
 
-namespace at::utils::logger_manager::logger
+namespace at::utils::log_system::logger
 {
     bool is_valid_ref(logger_context::LoggerContext **ref);
 
