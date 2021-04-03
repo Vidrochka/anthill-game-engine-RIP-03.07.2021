@@ -13,4 +13,5 @@
 #include "ConfigSystem/ATConfigSource.hpp"
 
 //--------------Castom types--------------//
+#include "Types/ATColor.hpp"
 #include "Types/ATString.hpp"

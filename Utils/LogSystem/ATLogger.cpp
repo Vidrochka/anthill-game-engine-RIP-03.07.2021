@@ -31,7 +31,7 @@ namespace at::utils::log_system::logger
         _logger_context->strategy_list.push_back(strategy);
     }
 
-    DefaultLogger::DefaultLogger(logger_context::LoggerContext *logger_info) : at_interface::AbstractLogger(logger_info)
+    DefaultLogger::DefaultLogger(std::shared_ptr<logger_context::LoggerContext> context) : at_interface::ILogger(context)
     {
         //_logger_context = logger_info;
     }

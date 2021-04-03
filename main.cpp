@@ -1,17 +1,27 @@
 //#include <string>
 #include <iostream>
+#include "Core/ATCore.hpp"
 #include "Utils/Utils.hpp"
 #include <locale.h>
 
-int main()
+int main(int argc, char *argv[])
 {
     try
     {
         setlocale(LC_ALL, "");
         at::utils::log_system::LoggerManager log_manager{};
         log_manager.create_logger("test");
-        at::utils::log_system::logger::at_interface::AbstractLogger *logger = log_manager.get_logger("test");
-        //LOG_ARGS4(L"1", L"2", L"3", L"4")
+        auto logger = log_manager.get_logger("test");
+        logger->add_strategy(new at::utils::log_system::strategy::DefaultFileLogStrategy{"./test2.log", 5});
+        at::core::window_system::window_manager::WindowManager window_manager{std::shared_ptr<ILogger>(logger)};
+        window_manager.open_new_window(
+            *(at::core::window_system::window_initialize_settings::WindowInitializeSettings("Test")
+                  .set_resizable(false)
+                  ->set_backgroud_color(at::type::color::RGBA_at<uint8_t>::get_black())));
+        logger->flush();
+        std::cin.get();
+
+        /*//LOG_ARGS4(L"1", L"2", L"3", L"4")
         logger->add_strategy(new at::utils::log_system::strategy::DefaultFileLogStrategy{"./test2.log", 5});
         logger->log_debug("test 1");
         logger->log_debug("b test 1 дда 佐藤 幹夫 ");
@@ -29,12 +39,38 @@ int main()
         delete strategy;
         //logger.flush();
         logger->log_fatal("test 3", 2, LINE_STAMP);
-        logger->log_error("test 4");
+        logger->log_error("test 4");*/
     }
-    catch (std::string err_msg)
+    catch (std::exception ex)
     {
+        std::cout << ex.what();
         return 1;
     }
 
     return 0;
 }
+
+/*int main(int argc, char *argv[])
+{
+    SDL_Init(SDL_INIT_VIDEO);
+
+    SDL_Window *window = SDL_CreateWindow(
+        "SDL2Test",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        640,
+        480,
+        0);
+
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+    SDL_SetRenderDrawColor(renderer, 68, 68, 68, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(renderer);
+    SDL_RenderPresent(renderer);
+
+    SDL_Delay(3000);
+
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+    return 0;
+}*/

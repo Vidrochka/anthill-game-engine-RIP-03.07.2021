@@ -22,36 +22,21 @@ namespace at::utils::log_system::logger
 {
     namespace at_interface
     {
-        class AbstractLogger
+        class ILogger
         {
         protected:
-            logger_context::LoggerContext *_logger_context = nullptr;
+            std::shared_ptr<logger_context::LoggerContext> _logger_context;
 
         private:
-            AbstractLogger();
+            ILogger();
+            ILogger(ILogger &);
 
         public:
-            AbstractLogger(logger_context::LoggerContext *context)
+            ILogger(std::shared_ptr<logger_context::LoggerContext> context)
             {
                 _logger_context = context;
             }
-            virtual ~AbstractLogger()
-            {
-                bool need_delete = false;
-                {
-                    std::lock_guard<std::mutex> lg(_logger_context->write_mutex);
-                    _logger_context->_owners_counter--;
-
-                    if (_logger_context->_owners_counter == 0)
-                        need_delete = true;
-                } //можно проще сделать без лок гварда, но я хочу так)
-
-                if (need_delete)
-                {
-                    delete _logger_context;
-                    _logger_context = nullptr;
-                }
-            };
+            virtual ~ILogger(){};
             //log debug to corrent logger
             virtual void log_debug(u8string_at msg, u8string_at log_poin = "") = 0;
             //log info to corrent logger
@@ -69,7 +54,7 @@ namespace at::utils::log_system::logger
         };
     }
 
-    class DefaultLogger : public at_interface::AbstractLogger
+    class DefaultLogger : public at_interface::ILogger
     {
     private:
         void _log(u8string_at msg, event::EVENT_TYPE event_type, u8string_at log_poin = "");
@@ -78,7 +63,7 @@ namespace at::utils::log_system::logger
 
     public:
         //logger with logging in log_section
-        DefaultLogger(logger_context::LoggerContext *logger_info);
+        DefaultLogger(std::shared_ptr<logger_context::LoggerContext> context);
         ~DefaultLogger() override;
 
         //log debug to corrent logger

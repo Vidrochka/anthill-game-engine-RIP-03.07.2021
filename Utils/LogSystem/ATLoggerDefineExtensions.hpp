@@ -6,8 +6,6 @@
 #include "../Types/ATString.hpp"
 using namespace at::type::string;
 
-#define TO_STRING(obj) u8string_at(#obj)
-
 inline std::wstring cast_to_wsring(std::string str)
 {
     return std::wstring(str.begin(), str.end());

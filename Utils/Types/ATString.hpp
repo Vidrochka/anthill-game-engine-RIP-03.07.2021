@@ -8,6 +8,8 @@
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 
+#define TO_STRING(obj) u8string_at(#obj)
+
 namespace at::type::string
 {
     //typedef std::basic_string<char8_t, std::char_traits<char8_t>, std::allocator<char8_t>> u8string_at;
