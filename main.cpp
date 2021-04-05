@@ -13,33 +13,22 @@ int main(int argc, char *argv[])
         log_manager.create_logger("test");
         auto logger = log_manager.get_logger("test");
         logger->add_strategy(new at::utils::log_system::strategy::DefaultFileLogStrategy{"./test2.log", 5});
+
+        std::ifstream main_config("main_config.json");
+        json json_box;
+        main_config >> json_box;
+
+        auto main_window_settings = json_box["main_window_settings"].get<at::core::window_system::window_initialize_settings::WindowInitializeSettings>();
+
+        logger->log_debug(int_to_u8_at(main_window_settings.width));
+        logger->log_debug(int_to_u8_at(main_window_settings.height));
+        logger->log_debug(main_window_settings.lable);
+        logger->log_debug(int_to_u8_at((int)main_window_settings.open_mode));
+
         at::core::window_system::window_manager::WindowManager window_manager{std::shared_ptr<ILogger>(logger)};
-        window_manager.open_new_window(
-            *(at::core::window_system::window_initialize_settings::WindowInitializeSettings("Test")
-                  .set_resizable(false)
-                  ->set_backgroud_color(at::type::color::RGBA_at<uint8_t>::get_black())));
+        window_manager.open_new_window(main_window_settings);
         logger->flush();
         std::cin.get();
-
-        /*//LOG_ARGS4(L"1", L"2", L"3", L"4")
-        logger->add_strategy(new at::utils::log_system::strategy::DefaultFileLogStrategy{"./test2.log", 5});
-        logger->log_debug("test 1");
-        logger->log_debug("b test 1 дда 佐藤 幹夫 ");
-        logger->log_error("test 2");
-        std::cout << "1" << std::endl;
-        at::utils::config_system::source::at_interface::IConfigSourceInterface *source = new at::utils::config_system::source::DefaultFileConfigSource("./test.toml");
-        std::cout << "2" << std::endl;
-        at::utils::config_system::parsing_strategy::at_interface::IParsingStrategy *strategy = new at::utils::config_system::parsing_strategy::TomlParsingStrategy();
-        std::cout << "3" << std::endl;
-        auto config = at::utils::config_system::ConfigManager::get_config(source, strategy);
-        std::cout << "4" << std::endl;
-        logger->log_info(config->get_section("default")->get_value("test"));
-
-        delete source;
-        delete strategy;
-        //logger.flush();
-        logger->log_fatal("test 3", 2, LINE_STAMP);
-        logger->log_error("test 4");*/
     }
     catch (std::exception ex)
     {
@@ -49,28 +38,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
-/*int main(int argc, char *argv[])
-{
-    SDL_Init(SDL_INIT_VIDEO);
-
-    SDL_Window *window = SDL_CreateWindow(
-        "SDL2Test",
-        SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED,
-        640,
-        480,
-        0);
-
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-    SDL_SetRenderDrawColor(renderer, 68, 68, 68, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(renderer);
-    SDL_RenderPresent(renderer);
-
-    SDL_Delay(3000);
-
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-
-    return 0;
-}*/

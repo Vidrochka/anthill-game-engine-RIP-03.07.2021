@@ -21,8 +21,8 @@ BOOST_AUTO_TEST_CASE(test_config_toml_read_one_param_one_section_in_config)
 
     BOOST_REQUIRE(source);
 
-    at::utils::config_system::parsing_strategy::at_interface::IParsingStrategy *strategy //
-        = new at::utils::config_system::parsing_strategy::TomlParsingStrategy();
+    at::utils::config_system::parsing_strategy::at_interface::IDynamicParsingStrategy *strategy //
+        = new at::utils::config_system::parsing_strategy::TomlDynamicParsingStrategy();
 
     BOOST_REQUIRE(strategy);
 
@@ -59,8 +59,8 @@ BOOST_AUTO_TEST_CASE(test_config_toml_read_one_param_two_section_in_config)
 
     BOOST_REQUIRE(source);
 
-    at::utils::config_system::parsing_strategy::at_interface::IParsingStrategy *strategy //
-        = new at::utils::config_system::parsing_strategy::TomlParsingStrategy();
+    at::utils::config_system::parsing_strategy::at_interface::IDynamicParsingStrategy *strategy //
+        = new at::utils::config_system::parsing_strategy::TomlDynamicParsingStrategy();
 
     BOOST_REQUIRE(strategy);
 
@@ -100,8 +100,8 @@ BOOST_AUTO_TEST_CASE(test_config_toml_read_one_param_two_section_in_config_with_
 
     BOOST_REQUIRE(source);
 
-    at::utils::config_system::parsing_strategy::at_interface::IParsingStrategy *strategy //
-        = new at::utils::config_system::parsing_strategy::TomlParsingStrategy();
+    at::utils::config_system::parsing_strategy::at_interface::IDynamicParsingStrategy *strategy //
+        = new at::utils::config_system::parsing_strategy::TomlDynamicParsingStrategy();
 
     BOOST_REQUIRE(strategy);
 

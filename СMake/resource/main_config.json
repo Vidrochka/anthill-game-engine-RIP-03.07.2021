@@ -1,0 +1,9 @@
+{
+    "main_window_settings":
+    {
+        "height": 600,
+        "width": 800,
+        "lable": "Anthill game engine",
+        "open_mode": "maximized"
+    }
+}

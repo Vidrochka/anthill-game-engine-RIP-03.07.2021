@@ -1,5 +1,8 @@
 #include "ATLoggerStrategy.hpp"
+
 #include "ATLoggerDefineExtensions.hpp"
+#include "ATLoggerExceptions.hpp"
+
 #include <ctime>
 
 using namespace at::utils::log_system::event;
@@ -26,7 +29,7 @@ namespace at::utils::log_system::strategy
         _file_stream = std::ofstream{file_path, std::ios::app};
 
         if (!_file_stream.is_open())
-            throw u8string_at("Log file not opened: ") + _file_path;
+            throw log_system::exceptions::log_file_unawalable_exception("Can't open required file", _file_path);
     }
 
     DefaultFileLogStrategy::~DefaultFileLogStrategy()

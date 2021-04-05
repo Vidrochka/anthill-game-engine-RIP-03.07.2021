@@ -2,8 +2,10 @@
 #define at_logger_define_extensions
 #include <sstream>
 #include <string>
+
 #include "ATLogger.hpp"
 #include "../Types/ATString.hpp"
+
 using namespace at::type::string;
 
 inline std::wstring cast_to_wsring(std::string str)

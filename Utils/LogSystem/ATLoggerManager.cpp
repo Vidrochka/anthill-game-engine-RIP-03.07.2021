@@ -1,5 +1,6 @@
 #include "ATLoggerManager.hpp"
 #include <iostream>
+#include "ATLoggerExceptions.hpp"
 
 using namespace at::utils::log_system::logger::at_interface;
 using namespace at::utils::log_system::logger;
@@ -39,7 +40,7 @@ namespace at::utils::log_system
         if (_logger_context_map.count(log_name) > 0)
         {
             if (throw_if_exist)
-                throw std::string("Log section already exist");
+                throw log_system::exceptions::logger_context_already_exist_exception("Log section already exist");
             else
                 return;
         }

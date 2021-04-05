@@ -48,7 +48,7 @@ namespace at::core::window_system::window_manager
             virtual ~IWindowManager(){};
             virtual auto open_preload_window(PreloadWindowInitializeSettings settings) -> result::PRELOAD_WINDOW_CREATE_RESULT = 0;
             virtual auto close_preload_window(u8string_at window_name) -> void = 0;
-            virtual auto open_new_window(WindowInitializeSettings settings) -> result::WINDOW_CREATE_RESULT = 0;
+            virtual auto open_new_window(const WindowInitializeSettings settings) -> result::WINDOW_CREATE_RESULT = 0;
         };
     }
 
@@ -68,7 +68,7 @@ namespace at::core::window_system::window_manager
         ~WindowManager() override;
         auto open_preload_window(PreloadWindowInitializeSettings settings) -> result::PRELOAD_WINDOW_CREATE_RESULT override;
         auto close_preload_window(u8string_at window_name) -> void override;
-        auto open_new_window(WindowInitializeSettings settings) -> result::WINDOW_CREATE_RESULT override;
+        auto open_new_window(const WindowInitializeSettings settings) -> result::WINDOW_CREATE_RESULT override;
     };
 }
 

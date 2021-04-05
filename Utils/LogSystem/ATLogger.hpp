@@ -5,6 +5,7 @@
 #include "ATLoggerContext.hpp"
 #include "../Types/ATString.hpp"
 
+
 #include <sstream>
 #include <string>
 #include <fstream>

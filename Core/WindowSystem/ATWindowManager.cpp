@@ -40,7 +40,7 @@ namespace at::core::window_system::window_manager
     {
     }
 
-    auto WindowManager::open_new_window(WindowInitializeSettings settings) -> WINDOW_CREATE_RESULT
+    auto WindowManager::open_new_window(const WindowInitializeSettings settings) -> WINDOW_CREATE_RESULT
     {
         _logger->log_debug(u8string_at("Создаем новое окно. Название: ") + settings.window_name);
         std::lock_guard<std::mutex> lg(*_modify_window_collection_mx);
@@ -130,12 +130,12 @@ namespace at::core::window_system::window_manager
             settings.y_pos,
             settings.width,
             settings.height,
-            flags);
+            flags | SDL_WINDOW_SHOWN );
 
         if (window == nullptr)
             _logger->log_error(u8string_at{"STD-ERROR: "} + SDL_GetError());
 
-        SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+        SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
         if (renderer == nullptr)
             _logger->log_error(u8string_at{"STD-ERROR: "} + SDL_GetError());

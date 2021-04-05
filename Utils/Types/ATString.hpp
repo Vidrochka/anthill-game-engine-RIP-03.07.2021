@@ -68,21 +68,39 @@ namespace at::type::string
         return conv.from_bytes(reinterpret_cast<const char *>(pData), reinterpret_cast<const char *>(pData + s.length()));
     }
 
+    //----------------------------------------------//
     //----------------- int -> utf------------------//
-    static u8string_at int_to_u8_at(const int &val)
-    {
-        return std::to_string(val);
-    }
+    u8string_at int_to_u8_at(const int &val);
 
-    static u16string_at int_to_u16_at(const int &val)
-    {
-        return at::type::string::u8_to_u16_at(std::to_string(val));
-    }
+    u16string_at int_to_u16_at(const int &val);
 
-    static u32string_at int_to_u32_at(const int &val)
-    {
-        return at::type::string::u8_to_u32_at(std::to_string(val));
-    }
+    u32string_at int_to_u32_at(const int &val);
+
+    //----------------------------------------------//
+    //----------------------------------------------//
+
+    //----------------------------------------------//
+    //----------------- double -> utf------------------//
+    u8string_at double_to_u8_at(const double &val);
+
+    u16string_at double_to_u16_at(const double &val);
+
+    u32string_at double_to_u32_at(const double &val);
+
+    //----------------------------------------------//
+    //----------------------------------------------//
+
+    //-----------------------------------------------//
+    //-----------------Trim section-----------------//
+
+    u32string_at ltrim_at(u32string_at str, const u32string_at chars);
+
+    u32string_at rtrim_at(u32string_at str, const u32string_at chars);
+
+    u32string_at trim_at(u32string_at str, const u32string_at chars);
+
+    //-----------------------------------------------//
+    //-----------------------------------------------//
 }
 
 #endif

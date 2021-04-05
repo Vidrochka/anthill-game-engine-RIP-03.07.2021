@@ -2,6 +2,7 @@
 #define at_logger_context
 
 #include "ATLoggerStrategy.hpp"
+
 #include <vector>
 #include <mutex>
 

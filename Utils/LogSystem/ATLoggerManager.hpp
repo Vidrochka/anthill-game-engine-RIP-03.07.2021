@@ -4,12 +4,12 @@
 #include "ATLogger.hpp"
 #include "ATLoggerContext.hpp"
 #include "ATLoggerStrategy.hpp"
+#include "../Types/ATString.hpp"
 #include <map>
 #include <vector>
 #include <mutex>
 #include <string>
 #include <memory>
-#include "../Types/ATString.hpp"
 
 using namespace at::utils::log_system::logger::at_interface;
 using namespace at::utils::log_system::logger;

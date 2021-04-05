@@ -1,7 +1,9 @@
 #ifndef at_logger_strategy
 #define at_logger_strategy
+
 #include "ATLoggerEvent.hpp"
 #include "../Types/ATString.hpp"
+
 #include <string>
 #include <sstream>
 #include <fstream>
