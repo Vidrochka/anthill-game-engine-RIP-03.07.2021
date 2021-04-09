@@ -2,18 +2,18 @@
 #define at_logger_define_extensions
 #include <sstream>
 #include <string>
+
 #include "ATLogger.hpp"
 #include "../Types/ATString.hpp"
-using namespace at::type::string;
 
-#define TO_STRING(obj) u8string_at(#obj)
+using namespace at::type::string;
 
 inline std::wstring cast_to_wsring(std::string str)
 {
     return std::wstring(str.begin(), str.end());
 }
 
-#define LINE_STAMP u8string_at("Line stamp: ") + "{ \"file\": \"" + u8string_at(__FILE__) + "\", \"function\": \"" + u8string_at(__FUNCTION__) + "\", \"line\": \"" + int_to_u8_at(__LINE__) + "\" }"
+#define LINE_STAMP "Line stamp: "u8at + "{ \"file\": \""u8at + u8string_at(__FILE__) + "\", \"function\": \""u8at + u8string_at(__FUNCTION__) + "\", \"line\": \""u8at + int_to_u8_at(__LINE__) + "\" }"u8at
 
 #define LOG_ARGS1(arg1)                                                      \
     {                                                                        \

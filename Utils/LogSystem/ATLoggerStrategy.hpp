@@ -1,7 +1,9 @@
 #ifndef at_logger_strategy
 #define at_logger_strategy
+
 #include "ATLoggerEvent.hpp"
 #include "../Types/ATString.hpp"
+
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -15,7 +17,7 @@ namespace at::utils::log_system::strategy
         {
         public:
             virtual ~ILogStrategy() {}
-            virtual void Log(at::utils::log_system::event::EVENT_TYPE event_type, u8string_at msg, u8string_at log_poin = "") = 0;
+            virtual void Log(at::utils::log_system::event::EVENT_TYPE event_type, u8string_at msg, u8string_at log_poin = ""u8at) = 0;
             virtual void Flush() = 0;
         };
     }
@@ -30,9 +32,9 @@ namespace at::utils::log_system::strategy
         size_t _actual_buffer_filling = 0;
 
     public:
-        DefaultFileLogStrategy(u8string_at file_path = "./default.log", size_t buffer_size = 1024);
+        DefaultFileLogStrategy(u8string_at file_path = "./default.log"u8at, size_t buffer_size = 1024);
         ~DefaultFileLogStrategy() override;
-        void Log(at::utils::log_system::event::EVENT_TYPE event_type, u8string_at msg, u8string_at log_poin = "") override;
+        void Log(at::utils::log_system::event::EVENT_TYPE event_type, u8string_at msg, u8string_at log_poin = ""u8at) override;
         void Flush() override;
     };
 }

@@ -4,9 +4,12 @@
 #include <string>
 #include <locale>
 #include <codecvt>
+#include <regex>
 
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
+
+#define TO_STRING(obj) u8string_at(#obj)
 
 namespace at::type::string
 {
@@ -66,21 +69,89 @@ namespace at::type::string
         return conv.from_bytes(reinterpret_cast<const char *>(pData), reinterpret_cast<const char *>(pData + s.length()));
     }
 
+    //----------------------------------------------//
     //----------------- int -> utf------------------//
-    static u8string_at int_to_u8_at(const int &val)
-    {
-        return std::to_string(val);
+    u8string_at int_to_u8_at(const int &val);
+
+    u16string_at int_to_u16_at(const int &val);
+
+    u32string_at int_to_u32_at(const int &val);
+
+    //----------------------------------------------//
+    //----------------------------------------------//
+
+    //----------------------------------------------//
+    //----------------- double -> utf------------------//
+    u8string_at double_to_u8_at(const double &val);
+
+    u16string_at double_to_u16_at(const double &val);
+
+    u32string_at double_to_u32_at(const double &val);
+
+    //----------------------------------------------//
+    //----------------------------------------------//
+
+    //-----------------------------------------------//
+    //-----------------Trim section-----------------//
+
+    u32string_at ltrim_at(u32string_at str, const u32string_at chars);
+
+    u32string_at rtrim_at(u32string_at str, const u32string_at chars);
+
+    u32string_at trim_at(u32string_at str, const u32string_at chars);
+
+    //-----------------------------------------------//
+    //-----------------------------------------------//
+
+    inline at::type::string::u8string_at operator"" u8at(const char* str, std::size_t len){
+        return u8string_at(str, len);
     }
 
-    static u16string_at int_to_u16_at(const int &val)
-    {
-        return at::type::string::u8_to_u16_at(std::to_string(val));
+    inline at::type::string::u16string_at operator"" u16at(const char* str, std::size_t len){
+        return u8_to_u16_at(u8string_at(str, len));
     }
 
-    static u32string_at int_to_u32_at(const int &val)
-    {
-        return at::type::string::u8_to_u32_at(std::to_string(val));
+    inline at::type::string::u32string_at operator"" u32at(const char* str, std::size_t len){
+        return u8_to_u32_at(u8string_at(str, len));
     }
+
+    //-----------------------------------------------//
+    //-----------------String builder----------------//
+
+    class U8StringBuilder
+    {
+    private:
+        u8string_at _raw_string;
+        U8StringBuilder() = delete;
+        U8StringBuilder(const U8StringBuilder&) = delete;
+
+    public:
+        U8StringBuilder(u8string_at raw_string)
+        {
+            _raw_string = raw_string;
+        }
+
+        template<typename T>
+        auto fmt(u8string_at regex, T formatter) -> U8StringBuilder&
+        {
+            std::regex r{regex};
+            _raw_string = std::regex_replace(_raw_string, r, std::to_string(formatter));
+            return *this;
+        }
+
+        template<typename T>
+        auto fmt(int param_number, T formatter) -> U8StringBuilder&
+        {
+            std::regex r{"\\{"u8at + int_to_u8_at(param_number) + "\\}"u8at};
+            _raw_string = std::regex_replace(_raw_string, r, std::to_string(formatter));
+            return *this;
+        }
+
+        operator u8string_at() { return _raw_string; }
+    };
+
+    //-----------------------------------------------//
+    //-----------------------------------------------//
 }
 
 #endif
