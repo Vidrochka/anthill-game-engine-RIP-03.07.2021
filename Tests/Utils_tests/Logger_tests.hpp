@@ -8,7 +8,7 @@ BOOST_AUTO_TEST_SUITE(log_system_tests)
 BOOST_AUTO_TEST_CASE(test_create_logger_and_delete_before_log_manager_release)
 {
     const u8string_at log_file_path = "./test_create_logger_and_delete_before_log_manager_release.log";
-    at::utils::log_system::logger::at_interface::AbstractLogger *logger = nullptr;
+    at::utils::log_system::logger::at_interface::ILogger *logger = nullptr;
     at::utils::log_system::LoggerManager log_manager{};
     log_manager.create_logger("test_create_logger_and_delete_before_log_manager_release", new at::utils::log_system::strategy::DefaultFileLogStrategy(log_file_path));
     BOOST_REQUIRE(logger == nullptr);
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(test_create_logger_and_delete_before_log_manager_release)
 BOOST_AUTO_TEST_CASE(test_create_logger_and_delete_after_log_manager_release)
 {
     const u8string_at log_file_path = "./test_create_logger_and_delete_after_log_manager_release.log";
-    at::utils::log_system::logger::at_interface::AbstractLogger *logger = nullptr;
+    at::utils::log_system::logger::at_interface::ILogger *logger = nullptr;
     {
         at::utils::log_system::LoggerManager log_manager{};
         log_manager.create_logger("test_create_logger_and_delete_after_log_manager_release", new at::utils::log_system::strategy::DefaultFileLogStrategy(log_file_path));
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(test_log_info)
     const u8string_at log_file_path = "./test_log_info.log";
     const u8string_at write_log = "вцв dawdaw3231 дда 佐藤 幹夫";
 
-    at::utils::log_system::logger::at_interface::AbstractLogger *logger = nullptr;
+    at::utils::log_system::logger::at_interface::ILogger *logger = nullptr;
     {
         at::utils::log_system::LoggerManager log_manager{};
         log_manager.create_logger("test_log_info", new at::utils::log_system::strategy::DefaultFileLogStrategy(log_file_path));
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(test_log_error)
     const u8string_at log_file_path = "./test_log_error.log";
     const u8string_at write_log = "вцв dawdaw3231 дда 佐藤 幹夫";
 
-    at::utils::log_system::logger::at_interface::AbstractLogger *logger = nullptr;
+    at::utils::log_system::logger::at_interface::ILogger *logger = nullptr;
     {
         at::utils::log_system::LoggerManager log_manager{};
         log_manager.create_logger("test_log_error", new at::utils::log_system::strategy::DefaultFileLogStrategy(log_file_path));
@@ -127,7 +127,7 @@ BOOST_AUTO_TEST_CASE(test_log_debug)
     const u8string_at log_file_path = "./test_log_debug.log";
     const u8string_at write_log = "вцв dawdaw3231 дда 佐藤 幹夫";
 
-    at::utils::log_system::logger::at_interface::AbstractLogger *logger = nullptr;
+    at::utils::log_system::logger::at_interface::ILogger *logger = nullptr;
     {
         at::utils::log_system::LoggerManager log_manager{};
         log_manager.create_logger("test_log_debug", new at::utils::log_system::strategy::DefaultFileLogStrategy(log_file_path));
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(test_log_warning)
     const u8string_at log_file_path = "./test_log_warning.log";
     const u8string_at write_log = "вцв dawdaw3231 дда 佐藤 幹夫";
 
-    at::utils::log_system::logger::at_interface::AbstractLogger *logger = nullptr;
+    at::utils::log_system::logger::at_interface::ILogger *logger = nullptr;
     {
         at::utils::log_system::LoggerManager log_manager{};
         log_manager.create_logger("test_log_warning", new at::utils::log_system::strategy::DefaultFileLogStrategy(log_file_path));
@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE(test_log_fatal)
     const u8string_at log_file_path = "./test_log_fatal.log";
     const u8string_at write_log = "вцв dawdaw3231 дда 佐藤 幹夫";
 
-    at::utils::log_system::logger::at_interface::AbstractLogger *logger = nullptr;
+    at::utils::log_system::logger::at_interface::ILogger *logger = nullptr;
     {
         at::utils::log_system::LoggerManager log_manager{};
         log_manager.create_logger("test_log_fatal", new at::utils::log_system::strategy::DefaultFileLogStrategy(log_file_path));

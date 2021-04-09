@@ -1,5 +1,8 @@
 #include "ATLoggerStrategy.hpp"
+
 #include "ATLoggerDefineExtensions.hpp"
+#include "ATLoggerExceptions.hpp"
+
 #include <ctime>
 
 using namespace at::utils::log_system::event;
@@ -15,7 +18,7 @@ namespace at::utils::log_system::strategy
 #pragma warning(suppress : 4996)
             std::string raw_dt{ctime(&now)};
             u8string_at s_dt = u8string_at(raw_dt.begin(), raw_dt.end());
-            return "[" + s_dt.substr(0, s_dt.length() - 1) + "]";
+            return "["u8at + s_dt.substr(0, s_dt.length() - 1) + "]"u8at;
         }
     }
 
@@ -26,7 +29,7 @@ namespace at::utils::log_system::strategy
         _file_stream = std::ofstream{file_path, std::ios::app};
 
         if (!_file_stream.is_open())
-            throw u8string_at("Log file not opened: ") + _file_path;
+            throw log_system::exceptions::log_file_unawalable_exception("Can't open required file"u8at, _file_path);
     }
 
     DefaultFileLogStrategy::~DefaultFileLogStrategy()
@@ -59,12 +62,12 @@ namespace at::utils::log_system::strategy
             break;
         }
 
-        pre_log_buffer += "{ \"message\": \"" + msg + "\"";
+        pre_log_buffer += "{ \"message\": \""u8at + msg + "\""u8at;
 
-        if (log_poin != "")
-            pre_log_buffer += ", \"log point\": \"" + log_poin + "\" }\n";
+        if (log_poin != ""u8at)
+            pre_log_buffer += ", \"log point\": \""u8at + log_poin + "\" }\n"u8at;
         else
-            pre_log_buffer += "}\n";
+            pre_log_buffer += "}\n"u8at;
 
         _log_buffer << pre_log_buffer;
 

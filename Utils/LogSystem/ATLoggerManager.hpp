@@ -4,11 +4,12 @@
 #include "ATLogger.hpp"
 #include "ATLoggerContext.hpp"
 #include "ATLoggerStrategy.hpp"
+#include "../Types/ATString.hpp"
 #include <map>
 #include <vector>
 #include <mutex>
 #include <string>
-#include "../Types/ATString.hpp"
+#include <memory>
 
 using namespace at::utils::log_system::logger::at_interface;
 using namespace at::utils::log_system::logger;
@@ -31,15 +32,14 @@ namespace at::utils::log_system
             //if need_create_if_not_exist == false and not exist return false;
             //if need_create_if_not_exist == anything and exist return true
             virtual bool is_logger_exist(u8string_at log_name, bool need_create_if_not_exist = false, ILogStrategy *strategy = new DefaultFileLogStrategy{}) = 0;
-            virtual AbstractLogger *get_logger(u8string_at log_name) = 0;
+            virtual std::shared_ptr<ILogger> get_logger(u8string_at log_name) = 0;
         };
     }
     class LoggerManager : public at_interface::ILoggerManager
     {
     private:
-        std::map<u8string_at, logger_context::LoggerContext *> _logger_context_map;
+        std::map<u8string_at, std::shared_ptr<logger_context::LoggerContext>> _logger_context_map;
         std::mutex *_modify_context_collection_mx;
-        std::vector<AbstractLogger *> _created_logger_collection;
 
     public:
         LoggerManager();
@@ -47,7 +47,7 @@ namespace at::utils::log_system
         void flush_all() override;
         void create_logger(u8string_at log_name, ILogStrategy *strategy = new DefaultFileLogStrategy{}, bool throw_if_exist = true) override;
         bool is_logger_exist(u8string_at log_name, bool need_create_if_not_exist = false, ILogStrategy *strategy = new DefaultFileLogStrategy{}) override;
-        AbstractLogger *get_logger(u8string_at log_name) override;
+        std::shared_ptr<ILogger> get_logger(u8string_at log_name) override;
     };
 }
 

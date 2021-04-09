@@ -2,6 +2,7 @@
 #define at_logger_context
 
 #include "ATLoggerStrategy.hpp"
+
 #include <vector>
 #include <mutex>
 
@@ -31,9 +32,6 @@ namespace at::utils::log_system
             }
             std::vector<ILogStrategy *> strategy_list;
             std::mutex write_mutex{};
-            // счетчик владельцев контекста (менеджер логов тоже считается)
-            // когда == 0 последний владелец удаляет
-            size_t _owners_counter = 1;
         };
     }
 }
