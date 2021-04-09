@@ -4,7 +4,40 @@ Now, its jast a some kind of trash with plan. Look at the future...
 
 # Goals
 
-- #### Logging
+---
+
+- #### Shared types
+
+:white_check_mark: Тип строки для u8/u16/u32 (u8string_at/u16string_at/u32string_at)     
+:white_check_mark: Методы конвертирования меджу кодировками     
+:white_check_mark: Каст int типов в u8/u16/u32 строки (надо доработать под шаблонный тип для универсальности)     
+:white_check_mark: Добавлен хвост u8at для преобразования строковыхлитералов в u8string_at
+```cpp
+auto text = "text"u8at
+//text имеет тип u8string_at
+```
+:white_check_mark: U8StringBuilder - тип-форматер строк. Пожалуй одна из самых моих любимых частей в проекте     
+* fmt(u8string_at regex, T formatter) -> U8StringBuilder& - шаблонный метод, по регулярке заменяет значения в строке на параметр вызывая to_string()    
+* fmt(int param_number, T formatter) -> U8StringBuilder& - шаблонный метод, по номеру замамены заменыет {N} на переданное значение     
+* перегружен для неявного преобразования в u8string_at   
+
+:white_check_mark: RGB_at и RGBA_at - шаблонные классы для представления цвета    
+* метод to_vector возвращает std::vector из компонент цвета (from_vector противоположное действие)    
+* метод to_string формирует строку читаемого вида для логгирования     
+* метод get_black и get_white возвращают крайние значения определенные для шаблонного типа     
+
+---
+
+- #### Guid
+
+:white_check_mark: Реализована система guid. Тип id можно специализировать числовым шаблонным типом    
+* release_id(id_type id) - уменьшают счетчик максимального id если это крайнее значение или сохраняются в вектор для последующей выдачи    
+* get_new_id() - возвращает новый id если в коллекци высвобожденных id пусто, иначе достает сохраненный id
+* defragmentate() - сортирует коллекцию и уменьшает счетчик id если есть крайние id
+
+---
+
+- ### Logging
 :white_check_mark: Добавить интерфейс менеджера логов    
 :white_check_mark: Реализовать интерфейс менеджера логов    
 :white_check_mark: Добавить общий интерфейс стратерии логирования    
@@ -48,16 +81,100 @@ Now, its jast a some kind of trash with plan. Look at the future...
 
 - ### Window manager
 
+:black_square_button: Удалить интерфейс WindowManager-а, т.к. работа будет только с SDL реализвцией (безсмысленно что либо еще брать)
 :black_square_button: Реализовать класс работы с оконной системой SDL2    
-:black_square_button: Добавить пожддержку сногооконной системы
+* :white_check_mark: open_preload_window(PreloadWindowInitializeSettings settings) - открывает окно предзагрузки с изображением (пока не закрыт нельзя открыть основное окно)     
+* :black_square_button: close_preload_window()     
+* :black_square_button: open_new_window(const WindowInitializeSettings settings) - отрывает новое окно по настройкам. Скорее всго претерипит определенные изменения для многооконной системы    
+
+:white_check_mark: DTO с настройками для открытия preload окна - "PreloadWindowInitializeSettings"
+:white_check_mark: DTO с настройками для открытия основного окна - "WindowInitializeSettings"
+:black_square_button: Добавить пожддержку многооконной системы     
+
+---
+
+- ### Render system
+
+Пока реализую отрисовку opengl как самую удобную для быстрого poc. В последствии обязательно добавлю vulkan как основной вид рендера
+
+:white_check_mark: Составить интерфейс рендера методы рендера:    
+* draw_rectangle() - Отрисовка прямоугольника (параметры по ходу пойму какие надо)     
+* draw_triangle() - Отрисовка треугольника (параметры по ходу пойму какие надо)       
+* draw_circle() - Отрисовка круга (параметры по ходу пойму какие надо)      
+* draw_text() - Отрисовка текста (параметры по ходу пойму какие надо)     
+* draw_line() - Отрисовка линии (параметры по ходу пойму какие надо)     
+* draw_frame() - Отрисовка обрамляющей линии (параметры по ходу пойму какие надо)     
+* draw_image(std::shared_ptr<type::image::Image> image, uint_fast32_t shader_program_id, Rect<int_fast32_t> rect) - Отрисовка изображения (реализованно для opengl)
+* add_shader(std::ifstream& shader_stream, SHADER_TYPE shader_type) -> uint_fast32_t - добавляет шейдер в коллекцию + возвращает id шейдера    
+В реализации opengl id шейдера непосредственно id шейдера, в vulkan будет map с id    
+* add_shader(u8string_at shader_file_name, SHADER_TYPE shader_type) -> uint_fast32_t - см. выше    
+* add_shader(std::stringstream& shader_stream, SHADER_TYPE shader_type) -> uint_fast32_t - см. выше     
+* delete_shader(uint_fast32_t shader_id, SHADER_TYPE shader_type) - удаляет шейдер и высвобождает память     
+* add_shaders_program(std::map<SHADER_TYPE, uint_fast32_t> shaders_id_map) -> uint_fast32_t линкует шейдеры в программ и возвращает id шейдерной программы     
+* delete_shaders_program(uint_fast32_t shader_program_id) - удаляет шейдерную программу и очищает память     
+* initialize_render_context(SDL_Window &window) - инициализирует контекст рендера (сокрее всего удалю, издержки проектирования и разбирания на ходу)     
+* select_render_context() - делает текущий контекст активным настраивая все необходимое для рендера в текущий объект контекста (для многооконной системы)     
+* prepare_new_frame(at::type::color::RGBA_at<uint8_t> color) - подготовка нового кадра (очистка буферов + получение размера области отрисовки)     
+
+:black_square_button: Реализовать рендер для opengl    
+* :black_square_button: draw_rectangle()     
+* :black_square_button: draw_triangle()       
+* :black_square_button: draw_circle()      
+* :black_square_button: draw_text()       
+* :black_square_button: draw_line()        
+* :black_square_button: draw_frame()      
+* :white_check_mark: draw_image(std::shared_ptr<type::image::Image> image, uint_fast32_t shader_program_id, Rect<int_fast32_t> rect)      
+* :white_check_mark: add_shader(std::ifstream& shader_stream, SHADER_TYPE shader_type) -> uint_fast32_t          
+* :white_check_mark: add_shader(u8string_at shader_file_name, SHADER_TYPE shader_type) -> uint_fast32_t        
+* :white_check_mark: add_shader(std::stringstream& shader_stream, SHADER_TYPE shader_type) -> uint_fast32_t          
+* delete_shader(uint_fast32_t shader_id, SHADER_TYPE shader_type) +           
+* :white_check_mark: add_shaders_program(std::map<SHADER_TYPE, uint_fast32_t> shaders_id_map) -> uint_fast32_t      
+* :white_check_mark: delete_shaders_program(uint_fast32_t shader_program_id)
+* :white_check_mark: initialize_render_context(SDL_Window &window)    
+* :white_check_mark: select_render_context()         
+* :white_check_mark: prepare_new_frame(at::type::color::RGBA_at<uint8_t> color)      
+
+:black_square_button: Реализовать рендер для vulkan (не начато)    
+
+:white_check_mark: Реализовать статический метод возвращающий правильный рендер по RENDER_PROVIDER_TYPE (параметр конфигурации окна)     
+
+---
+
+- ### Gui types 
+
+:white_check_mark: Класс для загрузки изображения при помощи stb. Конструктор скрыт, есть статический метод конструирующий shared_ptr     
+Это дает возможность кидать указатель на изображение по программе не волнуясь что ее удалят перед рендером      
+:white_check_mark: Добавить шаблонный Rect тип с x,y,width,height    
+:white_check_mark: Добавить шаблонный Vector для 2D и 3D    
 
 ---
 
 - ### Gui system
 
-:black_square_button: Понять как ImGui реализует отрисовку независимую от оконных систем     
-:black_square_button: Частично копипастить систему ImGui с правками для реализации системы виджетов     
-Как сделствие реализовать свои способы позиционирования элементов имплементированные в отдельные классы виджетов     
+:white_check_mark: Понять как ImGui реализует отрисовку независимую от оконных систем    
+|Как я понял есть буфер команд отрисовки который обрабатывается отдельной реализацией рендера    
+По сути дерево виджетов реализует то же самое, но в виде дерева а не очереди команд. В конечном итоге разница только в реализации хранения|    
+
+:black_square_button: Реализовать систему отрисовки виджетов    
+Скорее всего будет в виде класса которому передается IRenderProvider и он отрисовывает по нему объекты
+
+Реализовать систему виджетов позиционирования:     
+  :black_square_button: "SingleFrame" - область в которую помещается 1 виджет (необходим как стартовый и для тестов)
+
+Реализовать систему виджетов:    
+  :black_square_button: Изображение - самоый простой виджет (функционал готов, надо объединить и виджет)
+
+
+<details>
+  <summary>Откуда ноги растут</summary>
+
+Оставляю это для понимания откуда автор вдохновлялся (тырил) идеи
+
+Частично копипастить систему ImGui с правками для реализации системы виджетов     
+Как сделствие реализовать свои способы позиционирования элементов имплементированные в отдельные классы виджетов  
+
+</details>  
+
 :black_square_button: Добавить вывод текста через sdl2 ttf lib     
 :black_square_button: Сделать парсер xml дерева для загрузки разметки изображения из xml файла     
 Необходимо для загрузки макета из динамических библиотек редакторов    
@@ -230,7 +347,8 @@ Now, its jast a some kind of trash with plan. Look at the future...
 
 - ### Зависимости:
 
-* [boost_1.75.0](https://www.boost.org/) - third_party_libs/boost_1_75_0
-* [SDL2-2.0.14](https://www.libsdl.org/) - third_party_libs/SDL2-2.0.14
-* [nlohmann/json](https://github.com/nlohmann/json) - third_party_libs/json
+* [boost_1.75.0](https://www.boost.org/) - third_party_libs/boost_1_75_0 (вырезан функционал для тестов, но есть ненужные файлы т.к. было слишком долго чистить, да и не надо зная что скорее всего что-то еще добавится от-туда)
+* [SDL2-2.0.14](https://www.libsdl.org/) - third_party_libs/SDL2-2.0.14 (все работа с окнами на нем)
+* [nlohmann/json](https://github.com/nlohmann/json) - third_party_libs/json (юзаем конфиги в json)
 * [ToruNiina/toml11](https://github.com/ToruNiina/toml11) - third_party_libs/toml11 [*Пока нет, но скоро добавится*]
+* [STB](https://github.com/nothings/stb) - third_party_libs/stb (для загрузки изображений)
