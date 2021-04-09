@@ -17,7 +17,7 @@ namespace at::utils::log_system::exceptions
     class log_file_unawalable_exception : public std::exception {
     public:  
         log_file_unawalable_exception(at::type::string::u8string_at description, at::type::string::u8string_at file_name) :
-         std::exception((description + ":" + file_name).c_str()) {}
+         std::exception((description + ":"u8at + file_name).c_str()) {}
     };
 }
 

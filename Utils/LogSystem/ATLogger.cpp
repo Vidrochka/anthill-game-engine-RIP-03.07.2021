@@ -33,14 +33,10 @@ namespace at::utils::log_system::logger
 
     DefaultLogger::DefaultLogger(std::shared_ptr<logger_context::LoggerContext> context) : at_interface::ILogger(context)
     {
-        //_logger_context = logger_info;
     }
 
     DefaultLogger::~DefaultLogger()
     {
-        /*if (!is_valid_ref(_logger_context))
-            return;*/
-
         flush();
     }
 
@@ -66,7 +62,7 @@ namespace at::utils::log_system::logger
 
     void DefaultLogger::log_fatal(u8string_at msg, int error_code, u8string_at log_poin)
     {
-        _log(msg + " | error code [" + int_to_u8_at(error_code) + "]", event::EVENT_TYPE::LOG_FATAL, log_poin);
+        _log(msg + " | error code ["u8at + int_to_u8_at(error_code) + "]"u8at, event::EVENT_TYPE::LOG_FATAL, log_poin);
         _flush();
     }
 

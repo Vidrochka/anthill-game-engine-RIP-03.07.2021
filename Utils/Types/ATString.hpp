@@ -4,6 +4,7 @@
 #include <string>
 #include <locale>
 #include <codecvt>
+#include <regex>
 
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
@@ -98,6 +99,56 @@ namespace at::type::string
     u32string_at rtrim_at(u32string_at str, const u32string_at chars);
 
     u32string_at trim_at(u32string_at str, const u32string_at chars);
+
+    //-----------------------------------------------//
+    //-----------------------------------------------//
+
+    inline at::type::string::u8string_at operator"" u8at(const char* str, std::size_t len){
+        return u8string_at(str, len);
+    }
+
+    inline at::type::string::u16string_at operator"" u16at(const char* str, std::size_t len){
+        return u8_to_u16_at(u8string_at(str, len));
+    }
+
+    inline at::type::string::u32string_at operator"" u32at(const char* str, std::size_t len){
+        return u8_to_u32_at(u8string_at(str, len));
+    }
+
+    //-----------------------------------------------//
+    //-----------------String builder----------------//
+
+    class U8StringBuilder
+    {
+    private:
+        u8string_at _raw_string;
+        U8StringBuilder() = delete;
+        U8StringBuilder(const U8StringBuilder&) = delete;
+
+    public:
+        U8StringBuilder(u8string_at raw_string)
+        {
+            _raw_string = raw_string;
+        }
+
+        template<typename T>
+        auto fmt(u8string_at regex, T formatter) -> U8StringBuilder&
+        {
+            std::regex r{regex};
+            _raw_string = std::regex_replace(_raw_string, r, std::to_string(formatter));
+            return *this;
+        }
+
+        template<typename T>
+        auto fmt(int param_number, T formatter) -> U8StringBuilder&
+        {
+            std::regex r{"\\{"u8at + int_to_u8_at(param_number) + "\\}"u8at};
+            _raw_string = std::regex_replace(_raw_string, r, std::to_string(formatter));
+            return *this;
+        }
+
+        operator u8string_at() { return _raw_string; }
+    };
 
     //-----------------------------------------------//
     //-----------------------------------------------//

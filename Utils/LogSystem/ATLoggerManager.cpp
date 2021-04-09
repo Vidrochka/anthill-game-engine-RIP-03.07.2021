@@ -40,7 +40,7 @@ namespace at::utils::log_system
         if (_logger_context_map.count(log_name) > 0)
         {
             if (throw_if_exist)
-                throw log_system::exceptions::logger_context_already_exist_exception("Log section already exist");
+                throw log_system::exceptions::logger_context_already_exist_exception("Log section already exist"u8at);
             else
                 return;
         }

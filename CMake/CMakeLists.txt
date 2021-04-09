@@ -8,6 +8,7 @@ project (atge)
 set (
     ENTER_POINT 
     "../main.cpp"
+    "../Defines.hpp"
 )
 
 set(LIBRARY_OUTPUT_PATH "${CMAKE_CURRENT_LIST_DIR}/../build/Debug/")
@@ -56,6 +57,16 @@ set (
 ##########################################
 
 ##########################################
+#                  GUID                  #
+##########################################
+set (GUI_TYPES 
+"../Utils/Guid/ATDebugGuid.hpp"
+"../Utils/Guid/ATGuid.hpp"
+"../Utils/Guid/ATGuidExceptions.hpp"
+"../Utils/Guid/ATGuidFabric.hpp")
+##########################################
+
+##########################################
 #                NOT NEED                #
 ##########################################
 #set_source_files_properties(
@@ -67,31 +78,70 @@ set (
 ##########################################
 #               Utils header             #
 ##########################################
-set (UTILS "../Utils/Utils.hpp" ${LOGGING} ${Types} ${JSON})
+set (UTILS "../Utils/Utils.hpp" ${LOGGING} ${Types} ${JSON} ${GUI_TYPES})
 ##########################################
 
 ##########################################
 #              Window system             #
 ##########################################
 set (WindowSystem 
-"../Core/WindowSystem/ATPreloadWindowInitializeSettings.hpp"
-"../Core/WindowSystem/ATWindowInitializeSettings.hpp"
-"../Core/WindowSystem/ATWindowInitializeSettings.cpp"
-"../Core/WindowSystem/ATWindowContext.hpp"
-"../Core/WindowSystem/ATWindowManager.cpp"
-"../Core/WindowSystem/ATWindowManager.hpp")
+"../Core/GuiSystem/WindowSystem/ATPreloadWindowInitializeSettings.hpp"
+"../Core/GuiSystem/WindowSystem/ATPreloadWindowInitializeSettings.cpp"
+"../Core/GuiSystem/WindowSystem/ATWindowInitializeSettings.hpp"
+"../Core/GuiSystem/WindowSystem/ATWindowInitializeSettings.cpp"
+"../Core/GuiSystem/WindowSystem/ATWindowContext.hpp"
+"../Core/GuiSystem/WindowSystem/ATWindowManager.cpp"
+"../Core/GuiSystem/WindowSystem/ATWindowManager.hpp")
+##########################################
+
+##########################################
+#             Render system             #
+##########################################
+set (RENDER_SYSTEM 
+"../Core/GuiSystem/RenderSystem/ATRenderProvider.hpp"
+"../Core/GuiSystem/RenderSystem/ATRenderProviderBuilder.hpp"
+"../Core/GuiSystem/RenderSystem/RenderProviderImplementation/ATOpenglRenderProvider.cpp"
+"../Core/GuiSystem/RenderSystem/RenderProviderImplementation/ATOpenglRenderProvider.hpp"
+"../Core/GuiSystem/RenderSystem/RenderProviderImplementation/ATRenderProviderExceptions.hpp")
+##########################################
+
+##########################################
+#                Gui types               #
+##########################################
+set (GUI_TYPES 
+"../Core/GuiSystem/Types/ATImage.cpp"
+"../Core/GuiSystem/Types/ATImage.hpp"
+"../Core/GuiSystem/Types/ATRect.hpp"
+"../Core/GuiSystem/Types/ATVector.hpp")
 ##########################################
 
 ##########################################
 #               Core header              #
 ##########################################
-set (CORE "../Core/ATCore.hpp" ${WindowSystem})
+set (CORE "../Core/ATCore.hpp" ${WindowSystem} ${GUI_TYPES} ${RENDER_SYSTEM})
+##########################################
+
+##########################################
+#                GL3W               #
+##########################################
+set (GL3W 
+"../third_party_libs/gl3w/include/GL/gl3w.h"
+"../third_party_libs/gl3w/src/gl3w.c"
+"../third_party_libs/gl3w/include/GL/glcorearb.h"
+"../third_party_libs/gl3w/include/KHR/khrplatform.h")
+##########################################
+
+##########################################
+#                  STBI                  #
+##########################################
+set (STBI 
+"../third_party_libs/stb/stb_image.h")
 ##########################################
 
 ##########################################
 #             Make executable            #
 ##########################################
-add_executable (atge ${ENTER_POINT} ${UTILS} ${CORE})
+add_executable (atge ${ENTER_POINT} ${UTILS} ${CORE} ${GL3W} ${STBI})
 ##########################################
 
 ##########################################

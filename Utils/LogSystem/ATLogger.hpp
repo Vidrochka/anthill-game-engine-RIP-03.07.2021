@@ -39,15 +39,15 @@ namespace at::utils::log_system::logger
             }
             virtual ~ILogger(){};
             //log debug to corrent logger
-            virtual void log_debug(u8string_at msg, u8string_at log_poin = "") = 0;
+            virtual void log_debug(u8string_at msg, u8string_at log_poin = ""u8at) = 0;
             //log info to corrent logger
-            virtual void log_info(u8string_at msg, u8string_at log_poin = "") = 0;
+            virtual void log_info(u8string_at msg, u8string_at log_poin = ""u8at) = 0;
             //log debug to corrent logger
-            virtual void log_warning(u8string_at msg, u8string_at log_poin = "") = 0;
+            virtual void log_warning(u8string_at msg, u8string_at log_poin = ""u8at) = 0;
             //log error to corrent logger
-            virtual void log_error(u8string_at msg, u8string_at log_poin = "") = 0;
+            virtual void log_error(u8string_at msg, u8string_at log_poin = ""u8at) = 0;
             //log fatal to corrent logger
-            virtual void log_fatal(u8string_at msg, int error_code, u8string_at log_poin = "") = 0;
+            virtual void log_fatal(u8string_at msg, int error_code, u8string_at log_poin = ""u8at) = 0;
             //flush corrent logger_section
             virtual void flush() = 0;
 
@@ -58,7 +58,7 @@ namespace at::utils::log_system::logger
     class DefaultLogger : public at_interface::ILogger
     {
     private:
-        void _log(u8string_at msg, event::EVENT_TYPE event_type, u8string_at log_poin = "");
+        void _log(u8string_at msg, event::EVENT_TYPE event_type, u8string_at log_poin = ""u8at);
         void _flush();
         void _add_strategy(ILogStrategy *strategy);
 
@@ -68,15 +68,15 @@ namespace at::utils::log_system::logger
         ~DefaultLogger() override;
 
         //log debug to corrent logger
-        void log_debug(u8string_at msg, u8string_at log_poin = "") override;
+        void log_debug(u8string_at msg, u8string_at log_poin = ""u8at) override;
         //log info to corrent logger
-        void log_info(u8string_at msg, u8string_at log_poin = "") override;
+        void log_info(u8string_at msg, u8string_at log_poin = ""u8at) override;
         //log debug to corrent logger
-        void log_warning(u8string_at msg, u8string_at log_poin = "") override;
+        void log_warning(u8string_at msg, u8string_at log_poin = ""u8at) override;
         //log error to corrent logger
-        void log_error(u8string_at msg, u8string_at log_poin = "") override;
+        void log_error(u8string_at msg, u8string_at log_poin = ""u8at) override;
         //log fatal to corrent logger
-        void log_fatal(u8string_at msg, int error_code, u8string_at log_poin = "") override;
+        void log_fatal(u8string_at msg, int error_code, u8string_at log_poin = ""u8at) override;
 
         void flush() override;
 

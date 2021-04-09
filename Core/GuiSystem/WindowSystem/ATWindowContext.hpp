@@ -1,7 +1,7 @@
 #ifndef at_window_context
 #define at_window_context
 
-#include "../../third_party_libs/SDL2-2.0.14/include/SDL.h"
+#include "../../../third_party_libs/SDL2-2.0.14/include/SDL.h"
 
 namespace at::core::window_system::window_context
 {

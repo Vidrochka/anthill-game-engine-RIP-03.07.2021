@@ -20,7 +20,9 @@ func main() {
 	configs := [...]file_data{
 		{"./resource/", "main_config.json", build_dir, "main_config.json"},
 		{"../third_party_libs/SDL2-2.0.14/lib/x64/", "SDL2.dll", build_dir, "SDL2.dll"},
-		//{"../third_party_libs/SDL2-2.0.14/lib/x64/", "SDL2main.dll", build_dir, "SDL2main.dll"},
+		{"./resource/", "test.jpg", build_dir, "test.jpg"},
+		{"./resource/", "shader_default.glsl_f", build_dir, "shader_default.glsl_f"},
+		{"./resource/", "shader_default.glsl_v", build_dir, "shader_default.glsl_v"},
 	}
 
 	for _, cfg := range configs {

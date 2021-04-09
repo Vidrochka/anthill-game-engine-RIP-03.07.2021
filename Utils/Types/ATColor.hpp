@@ -4,6 +4,7 @@
 #include <type_traits>
 #include <limits>
 #include <vector>
+#include "ATString.hpp"
 
 namespace at::type::color
 {
@@ -25,6 +26,13 @@ namespace at::type::color
 
         auto to_vector() -> std::vector<component_t> const {
             return std::vector<component_t>{r, g, b};
+        }
+
+        auto to_string() -> const at::type::string::u8string_at{
+            return "{ r: "u8at + std::to_string(r) 
+            + ", g: "u8at + std::to_string(g) 
+            + ", b: "u8at + std::to_string(b) 
+            + " }"u8at;
         }
 
         static auto from_vector(std::vector<component_t> vec) -> RGB_at<component_t> {
@@ -61,6 +69,14 @@ namespace at::type::color
 
         std::vector<component_t> to_vector() const {
             return std::vector<component_t>{r, g, b, a};
+        }
+
+        auto to_string() -> const at::type::string::u8string_at{
+            return "{ r: "u8at + std::to_string(r) 
+            + ", g: "u8at + std::to_string(g) 
+            + ", b: "u8at + std::to_string(b) 
+            + ", a: "u8at + std::to_string(a)
+            +  " }"u8at;
         }
 
         static auto from_vector(std::vector<component_t> vec) -> RGBA_at<component_t> {

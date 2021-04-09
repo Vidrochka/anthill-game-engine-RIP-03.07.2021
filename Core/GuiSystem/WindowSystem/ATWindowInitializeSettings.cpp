@@ -10,7 +10,6 @@ namespace at::core::window_system::window_initialize_settings
             {"x_pos", win_init_sett.x_pos},
             {"y_pos", win_init_sett.y_pos},
             {"lable", win_init_sett.lable},
-            {"window_name", win_init_sett.window_name},
             {"open_mode", win_init_sett.open_mode},
             {"draw_init_mode", win_init_sett.draw_init_mode},
             {"borderless", win_init_sett.borderless},
@@ -37,9 +36,6 @@ namespace at::core::window_system::window_initialize_settings
 
         if (j.contains("lable"))
             j.at("lable").get_to(win_init_sett.lable);
-
-        if (j.contains("window_name"))
-            j.at("window_name").get_to(win_init_sett.window_name);
 
         if (j.contains("open_mode"))
             j.at("open_mode").get_to(win_init_sett.open_mode);

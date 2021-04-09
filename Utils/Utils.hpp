@@ -1,5 +1,3 @@
-#define DEBUG_UTILS
-
 //--------------Logging--------------//
 #include "LogSystem/ATLoggerEvent.hpp"
 #include "LogSystem/ATLogger.hpp"
@@ -17,3 +15,6 @@
 //--------------File parsing--------------//
 #include "../third_party_libs/json/single_include/nlohmann/json.hpp"
 using json = nlohmann::json;
+
+//------------------Guid------------------//
+#include "Guid/ATGuidFabric.hpp"
