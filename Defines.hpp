@@ -1,4 +1,0 @@
-#define DEBUG_UTILS
-#define DEBUG_CORE
-
-#define STB_IMAGE_IMPLEMENTATION
