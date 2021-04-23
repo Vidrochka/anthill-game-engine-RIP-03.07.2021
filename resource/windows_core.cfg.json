@@ -1,0 +1,6 @@
+{
+  "windows_core": {
+    "log_file_name": "core.log",
+    "window_system_config_file_path": "window_system.cfg.json"
+  }
+}

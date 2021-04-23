@@ -1,0 +1,15 @@
+{
+  "window_system": {
+    "log_file_name": "window_system.log",
+    "draw_init_mode": "default"
+  },
+  "preload_window_settings": {
+    "borderless": true,
+    "resizable": false,
+    "height": 800,
+    "width": 1000,
+    "lable": "",
+    "backgroud_color": [ 60, 60, 60, 60 ],
+    "open_mode": "maximized"
+  }
+}
